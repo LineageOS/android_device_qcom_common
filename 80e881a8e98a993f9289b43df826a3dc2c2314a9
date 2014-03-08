@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bae84128_e68cc837",
+        "filename": "dtbtool/dtbtool.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2014-03-08T16:08:41Z",
+      "side": 1,
+      "message": "v2 devices should require this section as well.",
+      "revId": "80e881a8e98a993f9289b43df826a3dc2c2314a9",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
