@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a18252c_f710f3aa",
+        "filename": "init/init_msm8226.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 10258
+      },
+      "writtenOn": "2014-10-27T18:46:17Z",
+      "side": 1,
+      "message": "CAF did this. And this only works when ro.sf.lcd_density isn\u0027t defined in build.prop.",
+      "parentUuid": "5a18252c_d78e9726",
+      "revId": "d7841a33c3f41381edd32a593f08535e9ff5c97b",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a18252c_b7931b4f",
         "filename": "init/init_msm8916.c",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2014-10-27T13:32:03Z",
       "side": 1,
       "message": "Setting densities here is not really something we want to do.",
+      "revId": "d7841a33c3f41381edd32a593f08535e9ff5c97b",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a18252c_170c8f93",
+        "filename": "init/init_msm8916.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 10258
+      },
+      "writtenOn": "2014-10-27T18:46:17Z",
+      "side": 1,
+      "message": "CAF did this. And this only works when ro.sf.lcd_density isn\u0027t defined in build.prop.",
+      "parentUuid": "5a18252c_b7931b4f",
       "revId": "d7841a33c3f41381edd32a593f08535e9ff5c97b",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
