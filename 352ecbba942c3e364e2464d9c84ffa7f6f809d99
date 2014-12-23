@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aa08908_ed3008a1",
+        "filename": "cryptfs_hw/Android.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 8640
+      },
+      "writtenOn": "2014-12-23T16:02:34Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this just be in vendor/lib not vendor/lib/hw?",
+      "revId": "352ecbba942c3e364e2464d9c84ffa7f6f809d99",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
