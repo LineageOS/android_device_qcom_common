@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff0f0b1f_299d3959",
+        "filename": "power/power-8994.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 6334
+      },
+      "writtenOn": "2015-07-14T21:57:46Z",
+      "side": 0,
+      "message": "set_profile could safely be removed now in the header, unless it\u0027s being kept for future use?",
+      "revId": "a8bf98b641889b583b7b0c25ba38f2df758f85a1",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
