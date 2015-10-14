@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f287b81_f9a81278",
+        "filename": "init/init_msm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8640
+      },
+      "writtenOn": "2015-10-14T06:02:38Z",
+      "side": 1,
+      "message": "What was the reason for doing away with the alarm_file char?",
+      "range": {
+        "startLine": 136,
+        "startChar": 7,
+        "endLine": 136,
+        "endChar": 17
+      },
+      "revId": "7294794484de41f25f94e14eb6be14e90b81eeab",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
