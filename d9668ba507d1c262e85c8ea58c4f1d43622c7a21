@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f2f7f8d_a5fef2ab",
+        "filename": "power/power-8084.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 10094
+      },
+      "writtenOn": "2015-11-04T00:49:21Z",
+      "side": 1,
+      "message": "too many parentheses here",
+      "range": {
+        "startLine": 99,
+        "startChar": 20,
+        "endLine": 99,
+        "endChar": 34
+      },
+      "revId": "d9668ba507d1c262e85c8ea58c4f1d43622c7a21",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
