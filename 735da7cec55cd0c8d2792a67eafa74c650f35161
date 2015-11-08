@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f2f7f8d_ebe03299",
+        "filename": "dtbtool/dtbtool.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 3081
+      },
+      "writtenOn": "2015-11-08T23:09:23Z",
+      "side": 1,
+      "message": "Maybe even \"if (dp-\u003ed_type \u003d\u003d DT_REG || DT_UNKNOWN)\" is enough. Since we check later for the \".dtb\" file extension.",
+      "range": {
+        "startLine": 793,
+        "startChar": 36,
+        "endLine": 793,
+        "endChar": 42
+      },
+      "revId": "735da7cec55cd0c8d2792a67eafa74c650f35161",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
