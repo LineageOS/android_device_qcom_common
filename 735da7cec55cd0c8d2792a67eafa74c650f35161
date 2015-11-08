@@ -22,6 +22,30 @@
       "revId": "735da7cec55cd0c8d2792a67eafa74c650f35161",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f2f7f8d_8b6c0e09",
+        "filename": "dtbtool/dtbtool.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 3671
+      },
+      "writtenOn": "2015-11-08T23:12:14Z",
+      "side": 1,
+      "message": "i think if you\u0027re going to do that, you might as well remove the if altogether",
+      "parentUuid": "1f2f7f8d_ebe03299",
+      "range": {
+        "startLine": 793,
+        "startChar": 36,
+        "endLine": 793,
+        "endChar": 42
+      },
+      "revId": "735da7cec55cd0c8d2792a67eafa74c650f35161",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
