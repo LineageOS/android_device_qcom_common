@@ -46,6 +46,30 @@
       "revId": "735da7cec55cd0c8d2792a67eafa74c650f35161",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f2f7f8d_cb19f688",
+        "filename": "dtbtool/dtbtool.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 3081
+      },
+      "writtenOn": "2015-11-08T23:28:05Z",
+      "side": 1,
+      "message": "On filesystems which support this we shouldn\u0027t get DT_UNKNOWN. And yes for those which don\u0027t support it we\u0027d remove it. I mean how likely is it that precisely in this folder exists something other than a file with the suffix \".dtb\"?",
+      "parentUuid": "1f2f7f8d_8b6c0e09",
+      "range": {
+        "startLine": 793,
+        "startChar": 36,
+        "endLine": 793,
+        "endChar": 42
+      },
+      "revId": "735da7cec55cd0c8d2792a67eafa74c650f35161",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
