@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f2f7f8d_d2b76686",
+        "filename": "dtbtool/dtbtool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1063
+      },
+      "writtenOn": "2015-11-09T16:42:50Z",
+      "side": 1,
+      "message": "Please nuke the double parens while you\u0027re at it.",
+      "revId": "476bab9c3fd3a292fd536dc5ebf977476a1bd038",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f2f7f8d_f2c262e9",
+        "filename": "dtbtool/dtbtool.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1063
+      },
+      "writtenOn": "2015-11-09T16:42:50Z",
+      "side": 1,
+      "message": "is_reg can be replaced by setting dp-\u003ed_type to DT_REG here.",
+      "revId": "476bab9c3fd3a292fd536dc5ebf977476a1bd038",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
