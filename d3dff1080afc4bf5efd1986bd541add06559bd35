@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f2f7f8d_70e1b89a",
+        "filename": "power/Android.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 10094
+      },
+      "writtenOn": "2015-11-14T07:00:54Z",
+      "side": 1,
+      "message": "How about leaving TARGET_TAP_TO_WAKE_NODE in the default implementation, and allowing TARGET_POWER_SET_FEATURE_LIB to extend the set_feature function, rather than entire replacing it?  With this patchset, if there is a common feature down the line that all QCOM devices would support, we would have to modify every SET_FEATURE_LIB rather than just update this single location.",
+      "revId": "d3dff1080afc4bf5efd1986bd541add06559bd35",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
