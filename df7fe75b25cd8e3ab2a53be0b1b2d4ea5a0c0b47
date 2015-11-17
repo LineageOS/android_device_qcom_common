@@ -16,6 +16,24 @@
       "revId": "df7fe75b25cd8e3ab2a53be0b1b2d4ea5a0c0b47",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff5d4b2f_1e74fd98",
+        "filename": "power/power-8960.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2015-11-17T18:19:41Z",
+      "side": 1,
+      "message": "8064 uses 8960 hals",
+      "parentUuid": "ff5d4b2f_5e2cb598",
+      "revId": "df7fe75b25cd8e3ab2a53be0b1b2d4ea5a0c0b47",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
