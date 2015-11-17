@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff5d4b2f_6aefb787",
+        "filename": "power/power-feature-default.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 10094
+      },
+      "writtenOn": "2015-11-17T02:10:46Z",
+      "side": 1,
+      "message": "Line length",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 118
+      },
+      "revId": "d8ec1aaec6b67bae227e10376839cc3a91ce90fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
