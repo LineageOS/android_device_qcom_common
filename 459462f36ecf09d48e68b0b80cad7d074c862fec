@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff5d4b2f_33fffa68",
+        "filename": "power/power-8960.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 7446
+      },
+      "writtenOn": "2015-11-17T14:06:58Z",
+      "side": 1,
+      "message": "msm8960 devices are all dual core. apq8084 is only quadcore but has its own class",
+      "range": {
+        "startLine": 72,
+        "startChar": 34,
+        "endLine": 72,
+        "endChar": 51
+      },
+      "revId": "459462f36ecf09d48e68b0b80cad7d074c862fec",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff5d4b2f_1304f67a",
+        "filename": "power/power-8960.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 7446
+      },
+      "writtenOn": "2015-11-17T14:06:58Z",
+      "side": 1,
+      "message": "also here.",
+      "range": {
+        "startLine": 79,
+        "startChar": 34,
+        "endLine": 79,
+        "endChar": 57
+      },
+      "revId": "459462f36ecf09d48e68b0b80cad7d074c862fec",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
