@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "3fce034c_d493b74e",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-01-09T13:32:18Z",
+      "side": 1,
+      "message": "I think this is intentionally left vague...",
+      "parentUuid": "3fce034c_9488cf1f",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3fce034c_7483e305",
         "filename": "power/power-8952.c",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2016-01-09T13:28:45Z",
       "side": 1,
       "message": "no need to handle this hint. the perf manager code now handles low power modes for you, switching between power save profile and the previous user selected profile.",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fce034c_7498c369",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-01-09T13:32:18Z",
+      "side": 1,
+      "message": "I\u0027ll revisit this.",
+      "parentUuid": "3fce034c_7483e305",
       "revId": "3e88b431148756cc722837a02ec32d850547609e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
