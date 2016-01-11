@@ -104,6 +104,24 @@
       "revId": "3e88b431148756cc722837a02ec32d850547609e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fce034c_b66f0cc4",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-01-11T15:07:28Z",
+      "side": 1,
+      "message": "PerformanceManagerService in CM SDK handles LPM hints and switches to PROFILE_POWER_SAVE automatically: https://github.com/CyanogenMod/cm_platform_sdk/blob/cm-13.0/cm/lib/main/java/org/cyanogenmod/platform/internal/PerformanceManagerService.java#L251",
+      "parentUuid": "3fce034c_1652a014",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
