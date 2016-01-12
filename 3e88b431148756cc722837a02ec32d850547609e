@@ -140,6 +140,24 @@
       "revId": "3e88b431148756cc722837a02ec32d850547609e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1fcbff3d_b1c5f85d",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-01-12T05:35:57Z",
+      "side": 1,
+      "message": "That code will ultimately call setPowerProfile() and send POWER_HINT_SET_PROFILE, resulting in the PowerHAL still setting PROFILE_POWER_SAVE on low power mode.",
+      "parentUuid": "1fcbff3d_cb87b5b6",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
