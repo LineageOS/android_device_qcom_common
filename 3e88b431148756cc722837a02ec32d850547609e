@@ -158,6 +158,24 @@
       "revId": "3e88b431148756cc722837a02ec32d850547609e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1fcbff3d_319d8859",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-01-12T05:48:09Z",
+      "side": 1,
+      "message": "I don\u0027t get it, if this doesn\u0027t call set_power_profile at line 82, then nothing will.",
+      "parentUuid": "1fcbff3d_b1c5f85d",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
