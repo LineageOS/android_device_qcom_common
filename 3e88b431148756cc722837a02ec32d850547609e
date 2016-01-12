@@ -122,6 +122,24 @@
       "revId": "3e88b431148756cc722837a02ec32d850547609e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1fcbff3d_cb87b5b6",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-01-12T01:02:33Z",
+      "side": 1,
+      "message": "I don\u0027t see how that code has any relation to this code. This allows the power HAL to signal the QC perf code when low power mode is signaled.",
+      "parentUuid": "3fce034c_b66f0cc4",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
