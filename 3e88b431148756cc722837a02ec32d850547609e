@@ -176,6 +176,24 @@
       "revId": "3e88b431148756cc722837a02ec32d850547609e",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1fcbff3d_91ab1c74",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-01-12T05:49:33Z",
+      "side": 1,
+      "message": "Ah wait, I see what you\u0027re saying.",
+      "parentUuid": "1fcbff3d_319d8859",
+      "revId": "3e88b431148756cc722837a02ec32d850547609e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
