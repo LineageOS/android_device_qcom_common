@@ -16,6 +16,24 @@
       "revId": "42828204782575bf1086247629a5965f83c5d4f8",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ffb9cba7_e0f702f5",
+        "filename": "power/power-8992.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-02-21T17:38:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffb9cba7_80972691",
+      "revId": "42828204782575bf1086247629a5965f83c5d4f8",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
