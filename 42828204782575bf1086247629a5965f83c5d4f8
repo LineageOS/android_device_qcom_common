@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ffb9cba7_80972691",
+        "filename": "power/power-8992.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 14363
+      },
+      "writtenOn": "2016-02-21T16:49:45Z",
+      "side": 1,
+      "message": "Breaks here with\ndevice/qcom/common/power/power-8992.c: In function \u0027power_hint_override\u0027:\ndevice/qcom/common/power/power-8992.c:118:13: error: implicit declaration of function \u0027ARRAY_SIZE\u0027 [-Werror\u003dimplicit-function-declaration]\n             interaction(duration, ARRAY_SIZE(resources_launch_boost),\n             ^",
+      "revId": "42828204782575bf1086247629a5965f83c5d4f8",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
