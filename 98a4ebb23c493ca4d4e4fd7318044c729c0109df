@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ffb9cba7_a3aecd95",
+        "filename": "power/power-8974.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6315
+      },
+      "writtenOn": "2016-03-11T03:13:31Z",
+      "side": 1,
+      "message": "I think you need:\n    previous_boost_time \u003d cur_boost_time;\nhere.",
+      "range": {
+        "startLine": 160,
+        "startChar": 33,
+        "endLine": 160,
+        "endChar": 34
+      },
+      "revId": "98a4ebb23c493ca4d4e4fd7318044c729c0109df",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
