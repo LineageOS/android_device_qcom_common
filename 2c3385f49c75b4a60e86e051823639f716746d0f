@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5faad753_c41793ed",
+        "filename": "device/overlay/packages/apps/CellBroadcastReceiver/res/values/config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 10094
+      },
+      "writtenOn": "2016-04-19T15:33:04Z",
+      "side": 0,
+      "message": "it\u0027s just this one",
+      "range": {
+        "startLine": 27,
+        "startChar": 1,
+        "endLine": 28,
+        "endChar": 48
+      },
+      "revId": "2c3385f49c75b4a60e86e051823639f716746d0f",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
