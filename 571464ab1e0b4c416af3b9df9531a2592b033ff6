@@ -70,6 +70,30 @@
       "revId": "571464ab1e0b4c416af3b9df9531a2592b033ff6",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_47684a20",
+        "filename": "init/init_msm.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-05-09T18:21:08Z",
+      "side": 0,
+      "message": "This signals some stuff in frameworks. The functionality will work fine, but this lets you skip the bootanimation and lockscreen, I think.",
+      "parentUuid": "5faad753_878642db",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 5
+      },
+      "revId": "571464ab1e0b4c416af3b9df9531a2592b033ff6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
