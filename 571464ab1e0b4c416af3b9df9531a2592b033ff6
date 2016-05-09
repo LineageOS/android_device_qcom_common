@@ -46,6 +46,30 @@
       "revId": "571464ab1e0b4c416af3b9df9531a2592b033ff6",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_878642db",
+        "filename": "init/init_msm.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 4550
+      },
+      "writtenOn": "2016-05-09T18:19:28Z",
+      "side": 0,
+      "message": "On find7 I am not using libinit_msm and offline alarms work fine.",
+      "parentUuid": "5faad753_47236a06",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 5
+      },
+      "revId": "571464ab1e0b4c416af3b9df9531a2592b033ff6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
