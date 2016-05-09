@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5faad753_47236a06",
+        "filename": "init/init_msm.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-05-09T18:15:55Z",
+      "side": 0,
+      "message": "I think this is the only thing we\u0027re using init_msm.cpp for.",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 5
+      },
+      "revId": "571464ab1e0b4c416af3b9df9531a2592b033ff6",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
