@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5faad753_52dd336e",
+        "filename": "power/power-8952.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-05-28T13:51:21Z",
+      "side": 1,
+      "message": "Was this meant to be 0x3e01 instead? Haven\u0027t seen this parameter before.",
+      "revId": "30d3220cf1aa0cee444a25a694622f706526d185",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
