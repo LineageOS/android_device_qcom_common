@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5faad753_36fab4bc",
+        "filename": "power/power-8996.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-06-21T02:46:37Z",
+      "side": 1,
+      "message": "Would previous_boost_time even be anything other than 0?",
+      "revId": "6ea1af64f8fc6668515decf2f73e24bf10fce025",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
