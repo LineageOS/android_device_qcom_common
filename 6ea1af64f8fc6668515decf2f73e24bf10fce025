@@ -16,6 +16,24 @@
       "revId": "6ea1af64f8fc6668515decf2f73e24bf10fce025",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_76a82c8b",
+        "filename": "power/power-8996.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 13409
+      },
+      "writtenOn": "2016-06-21T04:14:21Z",
+      "side": 1,
+      "message": "If you re-call boost with a limited time (rather that \u00270\u0027 for unlimited time), you would need to re-call the power-hint to extend your time.  In this particular case, it may not need to be considered, though.",
+      "parentUuid": "5faad753_36fab4bc",
+      "revId": "6ea1af64f8fc6668515decf2f73e24bf10fce025",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
