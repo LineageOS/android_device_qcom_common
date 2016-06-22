@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "5faad753_b3ea310c",
+        "filename": "power/power-8996.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 13409
+      },
+      "writtenOn": "2016-06-22T20:08:30Z",
+      "side": 1,
+      "message": "missing comma at end of line",
+      "revId": "b53b65edd116b14b7a2bf7f788669f05c75b0eb2",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5faad753_f38e6977",
         "filename": "power/power-8996.c",
         "patchSetId": 8
