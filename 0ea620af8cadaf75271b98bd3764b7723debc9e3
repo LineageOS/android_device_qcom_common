@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5faad753_a6850d5c",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Might be better for you to just define an ARRAY_SIZE macro that does this for you and use it everywhere else.",
+      "range": {
+        "startLine": 77,
+        "startChar": 29,
+        "endLine": 77,
+        "endChar": 79
+      },
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_c6efe91b",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "__unused",
+      "range": {
+        "startLine": 143,
+        "startChar": 24,
+        "endLine": 143,
+        "endChar": 47
+      },
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_26991dc3",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Line length",
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_667b957a",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Line length",
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_e68ea577",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Why\u0027s this a double?",
+      "range": {
+        "startLine": 190,
+        "startChar": 12,
+        "endLine": 190,
+        "endChar": 18
+      },
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_86801148",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Line length",
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_a6d3cd5f",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Can\u0027t say I\u0027m a huge fan of the static flag variables, it makes the code a little more difficult to read. Don\u0027t display_hint_sent and display_hint2_sent correspond to screen state on/off though?",
+      "range": {
+        "startLine": 241,
+        "startChar": 17,
+        "endLine": 241,
+        "endChar": 35
+      },
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5faad753_c68a8968",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-06-23T16:17:43Z",
+      "side": 1,
+      "message": "Line length",
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
