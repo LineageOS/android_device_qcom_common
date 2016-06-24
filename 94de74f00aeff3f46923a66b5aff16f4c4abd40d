@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5faad753_c4a121fa",
+        "filename": "power/power-common.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 13409
+      },
+      "writtenOn": "2016-06-24T15:15:22Z",
+      "side": 1,
+      "message": "I actually meant just drop the #define UNUSED and use __unused in the functions. ;-)",
+      "revId": "94de74f00aeff3f46923a66b5aff16f4c4abd40d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
