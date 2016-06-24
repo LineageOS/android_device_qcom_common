@@ -49,6 +49,24 @@
     },
     {
       "key": {
+        "uuid": "5faad753_2957ae5a",
+        "filename": "power/power-8909.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-06-24T07:59:32Z",
+      "side": 1,
+      "message": "FWIW, I added macros for ARRAY_SIZE and UNUSED in power-common.h in http://review.cyanogenmod.org/#/c/150428/",
+      "parentUuid": "5faad753_86ced1b1",
+      "revId": "0ea620af8cadaf75271b98bd3764b7723debc9e3",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5faad753_c6efe91b",
         "filename": "power/power-8909.c",
         "patchSetId": 1
