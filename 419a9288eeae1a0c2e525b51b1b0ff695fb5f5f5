@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3fa7e38b_0946fb24",
+        "filename": "power/power.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 10094
+      },
+      "writtenOn": "2016-07-20T13:12:00Z",
+      "side": 1,
+      "message": "This can cause a compiler warning (logical-op-parentheses).  Better to just parentheses it.",
+      "range": {
+        "startLine": 76,
+        "startChar": 12,
+        "endLine": 76,
+        "endChar": 42
+      },
+      "revId": "419a9288eeae1a0c2e525b51b1b0ff695fb5f5f5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
