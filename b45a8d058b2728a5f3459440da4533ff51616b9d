@@ -52,6 +52,24 @@
       "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fa7e38b_4f363306",
+        "filename": "power/power-8916.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2016-07-21T09:42:23Z",
+      "side": 1,
+      "message": "Derp, sorry",
+      "parentUuid": "3fa7e38b_ef459f71",
+      "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
