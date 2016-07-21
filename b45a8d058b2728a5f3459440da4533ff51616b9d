@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3fa7e38b_cf7303e7",
+        "filename": "power/power-8916.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-07-21T08:50:04Z",
+      "side": 1,
+      "message": "Do we really want to let this be outside the function? By placing it inside is_target_8916(), it explicitly shows that the variable is only used by that function alone.",
+      "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
