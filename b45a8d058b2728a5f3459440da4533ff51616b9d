@@ -34,6 +34,24 @@
       "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fa7e38b_ef459f71",
+        "filename": "power/power-8916.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-07-21T08:58:31Z",
+      "side": 1,
+      "message": "Static variables in C preserve their values even when in functions iirc",
+      "parentUuid": "3fa7e38b_2f4c179d",
+      "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
