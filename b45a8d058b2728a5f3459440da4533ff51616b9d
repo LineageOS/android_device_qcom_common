@@ -16,6 +16,24 @@
       "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3fa7e38b_2f4c179d",
+        "filename": "power/power-8916.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2016-07-21T08:52:32Z",
+      "side": 1,
+      "message": "Yes because it allow to preserve is_8916 value and actually execute this code\n    if (is_8916 \u003e\u003d 0)\n        return is_8916;\nSo the next time the function is loaded it will skip get_soc_id and directly report is_8916",
+      "parentUuid": "3fa7e38b_cf7303e7",
+      "revId": "b45a8d058b2728a5f3459440da4533ff51616b9d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
