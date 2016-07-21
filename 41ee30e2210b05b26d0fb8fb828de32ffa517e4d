@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "3fa7e38b_8fa8ab1f",
+        "filename": "power/power-8916.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2016-07-21T08:40:57Z",
+      "side": 1,
+      "message": "Should be moved outside of the function",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 78,
+        "endChar": 28
+      },
+      "revId": "41ee30e2210b05b26d0fb8fb828de32ffa517e4d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3fa7e38b_4f9ab314",
         "filename": "power/power-8916.c",
         "patchSetId": 11
