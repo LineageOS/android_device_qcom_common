@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3fa7e38b_3eb664fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 13274
+      },
+      "writtenOn": "2016-08-07T13:17:55Z",
+      "side": 1,
+      "message": "Did you mean UFS? (Universal Flash Storage)",
+      "revId": "e13511b2b1bf9575ad784f35b58dfff506d97bbf",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
