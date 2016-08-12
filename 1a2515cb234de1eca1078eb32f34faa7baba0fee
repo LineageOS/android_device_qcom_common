@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3fa7e38b_a5e2382e",
+        "filename": "power/power-8916.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-08-12T00:18:35Z",
+      "side": 1,
+      "message": "This function seems stupid, but that\u0027s an issue for some other commit.",
+      "range": {
+        "startLine": 318,
+        "startChar": 10,
+        "endLine": 318,
+        "endChar": 24
+      },
+      "revId": "1a2515cb234de1eca1078eb32f34faa7baba0fee",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
