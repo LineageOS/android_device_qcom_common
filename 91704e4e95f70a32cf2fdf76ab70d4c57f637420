@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff2e2bb8_73d63c52",
+        "filename": "extractors/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-10-05T20:14:43Z",
+      "side": 1,
+      "message": "If these came from Nexus devices, this is probably not entirely accurate...",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "91704e4e95f70a32cf2fdf76ab70d4c57f637420",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff2e2bb8_93d1405b",
+        "filename": "extractors/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-10-05T20:14:43Z",
+      "side": 1,
+      "message": "It would be great if you could pin a version down. At least for kipper/crackling, the version should show up in the vendor repo commit.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 31
+      },
+      "revId": "91704e4e95f70a32cf2fdf76ab70d4c57f637420",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
