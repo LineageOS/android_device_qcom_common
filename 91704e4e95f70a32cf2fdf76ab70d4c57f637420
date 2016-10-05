@@ -45,6 +45,29 @@
       "revId": "91704e4e95f70a32cf2fdf76ab70d4c57f637420",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff2e2bb8_b3d0c452",
+        "filename": "extractors/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-10-05T20:15:18Z",
+      "side": 1,
+      "message": "This isn\u0027t exactly accurate, you probably want to specify at least the CAF branch CM is using here.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "91704e4e95f70a32cf2fdf76ab70d4c57f637420",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
