@@ -140,6 +140,30 @@
       "revId": "91704e4e95f70a32cf2fdf76ab70d4c57f637420",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff2e2bb8_396015cf",
+        "filename": "extractors/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2016-10-07T00:36:25Z",
+      "side": 1,
+      "message": "You probably want to specify which branch off CAF we are using for each platform instead of saying \"any x.x kernel\"",
+      "parentUuid": "ff2e2bb8_33bcb404",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "91704e4e95f70a32cf2fdf76ab70d4c57f637420",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
     }
   ]
 }
