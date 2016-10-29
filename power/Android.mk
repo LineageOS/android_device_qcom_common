@@ -71,6 +71,10 @@ LOCAL_SRC_FILES += power-8996.c
 LOCAL_CFLAGS += -DMPCTLV3
 endif
 
+ifeq ($(call is-board-platform-in-list,msmcobalt), true)
+LOCAL_SRC_FILES += power-msmcobalt.c
+endif
+
 endif  #  End of board specific list
 
 ifneq ($(TARGET_POWERHAL_SET_INTERACTIVE_EXT),)
@@ -94,6 +98,7 @@ else
 LOCAL_MODULE := power.$(TARGET_BOARD_PLATFORM)
 endif
 LOCAL_MODULE_TAGS := optional
+LOCAL_CFLAGS += -Wno-unused-parameter -Wno-unused-variable
 include $(BUILD_SHARED_LIBRARY)
 
 endif # TARGET_POWERHAL_VARIANT == qcom || WITH_QC_PERF
