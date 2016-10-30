@@ -17,4 +17,10 @@ vendor/lib/libRSDriver_adreno.so
 vendor/lib/librs_adreno.so
 vendor/lib/librs_adreno_sha1.so
 vendor/lib/libscale.so
+
+# Graphics firmware
+etc/firmware/a330_pfp.fw
+etc/firmware/a330_pm4.fw
+
+# UI blur
 vendor/lib/libuiblur.so
