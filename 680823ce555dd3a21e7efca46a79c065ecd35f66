@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff2e2bb8_e99bfb14",
+        "filename": "extractors/graphics-msm8960.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 7880
+      },
+      "writtenOn": "2016-11-21T00:03:07Z",
+      "side": 1,
+      "message": "I took this from the msm8974 graphics repo. Should I pin the sha1 hash for it?",
+      "revId": "680823ce555dd3a21e7efca46a79c065ecd35f66",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
