@@ -51,6 +51,8 @@
 static int video_encode_hint_sent;
 static int current_power_profile = PROFILE_BALANCED;
 
+pthread_mutex_t camera_hint_mutex = PTHREAD_MUTEX_INITIALIZER;
+static int camera_hint_ref_count;
 static void process_video_encode_hint(void *metadata);
 
 extern void interaction(int duration, int num_args, int opt_list[]);
@@ -303,19 +305,29 @@ static void process_video_encode_hint(void *metadata)
                 TIMER_RATE_BIG, 0x28,
                 TIMER_RATE_LITTLE, 0x28,
             };
-            if (!video_encode_hint_sent) {
-                perform_hint_action(video_encode_metadata.hint_id,
-                resource_values,
-                ARRAY_SIZE(resource_values));
-                video_encode_hint_sent = 1;
+            pthread_mutex_lock(&camera_hint_mutex);
+            camera_hint_ref_count++;
+            if (camera_hint_ref_count == 1) {
+                if (!video_encode_hint_sent) {
+                    perform_hint_action(video_encode_metadata.hint_id,
+                    resource_values,
+                    ARRAY_SIZE(resource_values));
+                    video_encode_hint_sent = 1;
+                }
             }
+            pthread_mutex_unlock(&camera_hint_mutex);
         }
     } else if (video_encode_metadata.state == 0) {
         if ((strncmp(governor, INTERACTIVE_GOVERNOR,
             strlen(INTERACTIVE_GOVERNOR)) == 0) &&
             (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            undo_hint_action(video_encode_metadata.hint_id);
-            video_encode_hint_sent = 0;
+            pthread_mutex_lock(&camera_hint_mutex);
+            camera_hint_ref_count--;
+            if (!camera_hint_ref_count) {
+                undo_hint_action(video_encode_metadata.hint_id);
+                video_encode_hint_sent = 0;
+            }
+            pthread_mutex_unlock(&camera_hint_mutex);
             return ;
         }
     }
