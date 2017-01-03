@@ -193,7 +193,16 @@ int power_hint_override(__unused struct power_module *module, power_hint_t hint,
             }
             return HINT_HANDLED;
         case POWER_HINT_LAUNCH_BOOST:
+            launch_boost_info_t *info = (launch_boost_info_t *) data;
+            if (info == NULL) {
+                ALOGE("Invalid argument for launch boost");
+                return HINT_HANDLED;
+            }
             duration = 2000;
+
+            ALOGV("LAUNCH_BOOST: %s (pid=%d)", info->packageName, info->pid);
+
+            start_prefetch(info->pid, info->packageName);
             interaction(duration, ARRAY_SIZE(resources_launch_boost),
                     resources_launch_boost);
             return HINT_HANDLED;
