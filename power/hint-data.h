@@ -33,6 +33,9 @@
 #define DISPLAY_STATE_HINT_ID           (0x0C00)
 #define DISPLAY_STATE_HINT_ID_2         (0x0D00)
 #define CAM_PREVIEW_HINT_ID             (0x0E00)
+#define SUSTAINED_PERF_HINT_ID          (0x0F00)
+#define VR_MODE_HINT_ID                 (0x1000)
+#define VR_MODE_SUSTAINED_PERF_HINT_ID  (0x1001)
 #define DEFAULT_PROFILE_HINT_ID         (0xFF00)
 
 struct hint_data {
