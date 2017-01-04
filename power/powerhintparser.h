@@ -31,7 +31,7 @@
 #define __POWERHINTPARSER__
 
 #define POWERHINT_XML      "/system/etc/powerhint.xml"
-#define MAX_HINT 3
+#define MAX_HINT 6
 #define MAX_PARAM 30
 
 typedef struct perflock_param_t {
