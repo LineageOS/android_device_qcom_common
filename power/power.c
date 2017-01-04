@@ -199,6 +199,8 @@ static void power_hint(__attribute__((unused)) struct power_module *module, powe
 
     switch(hint) {
         case POWER_HINT_VSYNC:
+        case POWER_HINT_SUSTAINED_PERFORMANCE:
+        case POWER_HINT_VR_MODE:
         case POWER_HINT_INTERACTION:
         case POWER_HINT_CPU_BOOST:
         case POWER_HINT_SET_PROFILE:
