@@ -77,6 +77,10 @@ ifeq ($(call is-board-platform-in-list,msm8998), true)
 LOCAL_SRC_FILES += power-8998.c
 endif
 
+ifeq ($(call is-board-platform-in-list,sdm660), true)
+LOCAL_SRC_FILES += power-660.c
+endif
+
 endif  #  End of board specific list
 
 ifneq ($(TARGET_POWERHAL_SET_INTERACTIVE_EXT),)
