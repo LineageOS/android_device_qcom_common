@@ -47,6 +47,8 @@
 #define QCDT_DT_TAG    "qcom,msm-id = <"
 #define QCDT_BOARD_TAG "qcom,board-id = <"
 #define QCDT_PMIC_TAG  "qcom,pmic-id = <"
+#define QCDT_MODEL_TAG "model = \""
+#define QCDT_QCOM_MODEL_TAG "qcom,model = \""
 
 
 #define PAGE_SIZE_DEF  2048
@@ -67,6 +69,7 @@ struct chipInfo_t {
   uint32_t subtype;
   uint32_t revNum;
   uint32_t pmic_model[4];
+  char     model[32];
   uint32_t dtb_size;
   char     *dtb_file;
   struct chipInfo_t *prev;
@@ -109,6 +112,7 @@ char *dt_tag = QCDT_DT_TAG;
 int   verbose;
 int   page_size = PAGE_SIZE_DEF;
 int   version_override = 0;
+int   is_motorola = 0;
 
 void print_help()
 {
@@ -122,6 +126,7 @@ void print_help()
     log_info("  --verbose/-v         verbose\n");
     log_info("  --force-v2/-2        output dtb v2 format\n");
     log_info("  --force-v3/-3        output dtb v3 format\n");
+    log_info("  --motorola/m         output Motorola dtb format\n");
     log_info("  --help/-h            this help screen\n");
 }
 
@@ -136,12 +141,13 @@ int parse_commandline(int argc, char *const argv[])
         {"dt-tag",      1, 0, 'd'},
         {"force-v2",    0, 0, '2'},
         {"force-v3",    0, 0, '3'},
+        {"motorola",    0, 0, 'm'},
         {"verbose",     0, 0, 'v'},
         {"help",        0, 0, 'h'},
         {0, 0, 0, 0}
     };
 
-    while ((c = getopt_long(argc, argv, "-o:p:s:d:23vh", long_options, NULL))
+    while ((c = getopt_long(argc, argv, "-o:p:s:d:23mvh", long_options, NULL))
            != -1) {
         switch (c) {
         case 1:
@@ -171,6 +177,9 @@ int parse_commandline(int argc, char *const argv[])
                 return RC_ERROR;
             }
             version_override = c - '0';
+            break;
+        case 'm':
+            is_motorola = 1;
             break;
         case 'v':
             verbose = 1;
@@ -279,6 +288,7 @@ struct chipInfo_t *getChipInfo(const char *filename, int *num, uint32_t msmversi
     const char str2[] = "\" 2>&1";
     char *buf, *pos;
     char *line = NULL;
+    char *model = NULL;
     size_t line_size;
     FILE *pfile;
     int llen;
@@ -528,6 +538,25 @@ struct chipInfo_t *getChipInfo(const char *filename, int *num, uint32_t msmversi
                         }
                     }
                 }
+
+                if (is_motorola && (pos = strstr(line,QCDT_MODEL_TAG)) != NULL && strstr(line,QCDT_QCOM_MODEL_TAG) == NULL) {
+                    char *model_end;
+                    int model_len;
+
+                    pos += strlen(QCDT_MODEL_TAG);
+
+                    if ((model_end=strchr(pos, '"')) != NULL && (model_len=model_end-pos)<32) {
+                        model = malloc(model_len+1);
+                        if (!model) {
+                            log_err("Out of memory\n");
+                            break;
+                        }
+
+                        memset(model, 0, model_len+1);
+                        strncat(model, pos, model_len);
+                        printf("Found model %s\n", model);
+                    }
+                }
             }
         }
     }
@@ -545,6 +574,10 @@ struct chipInfo_t *getChipInfo(const char *filename, int *num, uint32_t msmversi
     }
     if (count3 == 0 && msmversion == 3) {
         log_err("... skip, incorrect '%s' format\n", QCDT_PMIC_TAG);
+        return NULL;
+    }
+    if (is_motorola && model == NULL) {
+        log_err("... skip, property '%s' not found\n", QCDT_MODEL_TAG);
         return NULL;
     }
 
@@ -566,6 +599,11 @@ struct chipInfo_t *getChipInfo(const char *filename, int *num, uint32_t msmversi
                     } else {
                         tmp->t_next = chip->t_next;
                         chip->t_next = tmp;
+                    }
+
+                    if (is_motorola) {
+                        memset(tmp->model, 0, sizeof(tmp->model));
+                        strncpy(tmp->model, model, strlen(model));
                     }
 
                     tmp->chipset  = cId->chipset;
@@ -598,6 +636,12 @@ struct chipInfo_t *getChipInfo(const char *filename, int *num, uint32_t msmversi
                     tmp->t_next = chip->t_next;
                     chip->t_next = tmp;
                 }
+
+                if (is_motorola) {
+                    memset(tmp->model, 0, sizeof(tmp->model));
+                    strncpy(tmp->model, model, strlen(model));
+                }
+
                 tmp->chipset  = cId->chipset;
                 tmp->platform = cSt->platform;
                 tmp->revNum   = cId->revNum;
@@ -639,6 +683,9 @@ struct chipInfo_t *getChipInfo(const char *filename, int *num, uint32_t msmversi
         chipPt = chipPt->t_next;
         free(chipPt_tmp);
     }
+
+    if (model)
+        free(model);
 
     if (entryEndedST  == 1 && entryEndedDT == 1 && entryEndedPT == 1) {
         *num = count1;
@@ -930,6 +977,9 @@ int main(int argc, char **argv)
         goto cleanup;
     }
 
+    if (is_motorola)
+        version = 259;
+
     if (version_override != 0) {
         version = version_override;
     }
@@ -939,7 +989,10 @@ int main(int argc, char **argv)
     } else if (version == 2) {
         entry_size = 24;
     } else {
-        entry_size = 40;
+        if (is_motorola)
+            entry_size = 72;
+        else
+            entry_size = 40;
     }
 
     /* Write header info */
@@ -991,6 +1044,8 @@ int main(int argc, char **argv)
             expected += chip->master->dtb_size;
         }
         wrote += write(out_fd, &chip->master->dtb_size, sizeof(uint32_t));
+        if (is_motorola)
+            wrote += write(out_fd, &chip->model, sizeof(chip->model));
     }
 
     rc = RC_SUCCESS;
