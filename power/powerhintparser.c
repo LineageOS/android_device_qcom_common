@@ -1,4 +1,4 @@
-/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -40,8 +40,8 @@ int parsePowerhintXML() {
     xmlDocPtr doc;
     xmlNodePtr currNode;
     const char *opcode_str, *value_str, *type_str;
-    int opcode, value, type;
-    int numParams;
+    int opcode = 0, value = 0, type = 0;
+    int numParams = 0;
     static int hintCount;
 
     if(access(POWERHINT_XML, F_OK) < 0) {
@@ -87,6 +87,13 @@ int parsePowerhintXML() {
         if(!xmlStrcmp(node->name, BAD_CAST "Hint")) {
             if(xmlHasProp(node, BAD_CAST "type")) {
                type_str = (const char*)xmlGetProp(node, BAD_CAST "type");
+               if (type_str == NULL)
+               {
+                   ALOGE("xmlGetProp failed on type");
+                   xmlFreeDoc(doc);
+                   xmlCleanupParser();
+                   return -1;
+               }
                type = strtol(type_str, NULL, 16);
             }
 
@@ -96,10 +103,24 @@ int parsePowerhintXML() {
 
                     if(xmlHasProp(node, BAD_CAST "opcode")) {
                         opcode_str  = (const char*)xmlGetProp(node, BAD_CAST "opcode");
+                        if (opcode_str == NULL)
+                        {
+                            ALOGE("xmlGetProp failed on opcode");
+                            xmlFreeDoc(doc);
+                            xmlCleanupParser();
+                            return -1;
+                        }
                         opcode = strtol(opcode_str, NULL, 16);
                     }
                     if(xmlHasProp(node, BAD_CAST "value")) {
                         value_str = (const char*)xmlGetProp(node, BAD_CAST "value");
+                        if (value_str == NULL)
+                        {
+                            ALOGE("xmlGetProp failed on value");
+                            xmlFreeDoc(doc);
+                            xmlCleanupParser();
+                            return -1;
+                        }
                         value = strtol(value_str, NULL, 16);
                     }
                     if(opcode > 0) {
