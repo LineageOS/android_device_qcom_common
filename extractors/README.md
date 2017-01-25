@@ -27,6 +27,14 @@ msm8992: Any 6.0+ kernel
 msm8994: Any 6.0+ kernel  
 msm8996: Patched mdss/kgsl up to LA.UM.5.5.r1-00100-8x96.0  
 
+## Bluetooth:
+### Origins:
+aptX: blob from griffin npl25.86-15  
+aptXHD: blob from h918 nrd90m (renamed)  
+### Min Bluetooth/CAF patch level required:
+aptX: bt.lnx.2.1-00007  
+aptXHD: bt.lnx.2.1-00014  
+
 ### Notes:
 <a name="googleEGL">1</a>: Google likes to strip QUIC branches from their shipped binaries so we can't really know which branch they originate from  
 <a name="floEGL">2</a>: On top of what's stated in footnote 1, flo's drivers deviate greatly from those of any CAF branch
