@@ -106,87 +106,15 @@ static void set_power_profile(int profile) {
 int  power_hint_override(struct power_module *module, power_hint_t hint,
         void *data)
 {
-    int duration, duration_hint;
-    static struct timespec s_previous_boost_timespec;
-    struct timespec cur_boost_timespec;
-    long long elapsed_time;
-    int resources_launch_boost[] = {
-        ALL_CPUS_PWR_CLPS_DIS,
-        SCHED_BOOST_ON,
-        SCHED_PREFER_IDLE_DIS,
-        0x20f,
-        0x4001,
-        0x4101,
-        0x4201,
-    };
-    int resources_cpu_boost[] = {
-        ALL_CPUS_PWR_CLPS_DIS,
-        SCHED_BOOST_ON,
-        SCHED_PREFER_IDLE_DIS,
-        0x20d,
-    };
-    int resources_interaction_boost[] = {
-        SCHED_PREFER_IDLE_DIS,
-        0x20d,
-        0x3d01,
-    };
 
-    if (hint == POWER_HINT_SET_PROFILE) {
-        set_power_profile(*(int32_t *)data);
-        return HINT_HANDLED;
-    }
-
-    // Skip other hints in custom power modes
-    if (current_power_profile != PROFILE_BALANCED) {
-        return HINT_HANDLED;
-    }
-
-    switch (hint) {
-        case POWER_HINT_INTERACTION:
-            duration = 500;
-            duration_hint = 0;
-
-            if (data) {
-                duration_hint = *((int *)data);
-            }
-
-            duration = duration_hint > 0 ? duration_hint : 500;
-
-            clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
-            elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-            if (elapsed_time > 750000)
-                elapsed_time = 750000;
-            // don't hint if it's been less than 250ms since last boost
-            // also detect if we're doing anything resembling a fling
-            // support additional boosting in case of flings
-            else if (elapsed_time < 250000 && duration <= 750)
-                return HINT_HANDLED;
-
-            s_previous_boost_timespec = cur_boost_timespec;
-
-            if (duration >= 1500) {
-                interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                        resources_cpu_boost);
-            } else {
-                interaction(duration, ARRAY_SIZE(resources_interaction_boost),
-                        resources_interaction_boost);
-            }
-            return HINT_HANDLED;
-        case POWER_HINT_LAUNCH_BOOST:
-            duration = 2000;
-            interaction(duration, ARRAY_SIZE(resources_launch_boost),
-                    resources_launch_boost);
-            return HINT_HANDLED;
-        case POWER_HINT_CPU_BOOST:
-            duration = *(int32_t *)data / 1000;
-            if (duration > 0) {
-                interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                        resources_cpu_boost);
-            }
-            return HINT_HANDLED;
+    switch(hint) {
+        case POWER_HINT_VSYNC:
+            break;
         case POWER_HINT_VIDEO_ENCODE:
+        {
             process_video_encode_hint(data);
             return HINT_HANDLED;
+        }
     }
     return HINT_NONE;
 }
@@ -212,8 +140,9 @@ int  set_interactive_override(struct power_module *module, int on)
         /* Display off. */
              if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
                 (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-               int resource_values[] = {TR_MS_CPU0_50, TR_MS_CPU4_50};
-
+               int resource_values[] = {INT_OP_CLUSTER0_TIMER_RATE, BIG_LITTLE_TR_MS_50,
+                                        INT_OP_CLUSTER1_TIMER_RATE, BIG_LITTLE_TR_MS_50,
+                                        INT_OP_NOTIFY_ON_MIGRATE, 0x00};
                 perform_hint_action(DISPLAY_STATE_HINT_ID,
                         resource_values, ARRAY_SIZE(resource_values));
              } /* Perf time rate set for CORE0,CORE4 8952 target*/
@@ -271,7 +200,20 @@ static void process_video_encode_hint(void *metadata)
         if ((strncmp(governor, INTERACTIVE_GOVERNOR,
             strlen(INTERACTIVE_GOVERNOR)) == 0) &&
             (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            int resource_values[] = {TR_MS_CPU0_30, TR_MS_CPU4_30};
+            /* Sched_load and migration_notif*/
+            int resource_values[] = {INT_OP_CLUSTER0_USE_SCHED_LOAD,
+                                     0x1,
+                                     INT_OP_CLUSTER1_USE_SCHED_LOAD,
+                                     0x1,
+                                     INT_OP_CLUSTER0_USE_MIGRATION_NOTIF,
+                                     0x1,
+                                     INT_OP_CLUSTER1_USE_MIGRATION_NOTIF,
+                                     0x1,
+                                     INT_OP_CLUSTER0_TIMER_RATE,
+                                     BIG_LITTLE_TR_MS_40,
+                                     INT_OP_CLUSTER1_TIMER_RATE,
+                                     BIG_LITTLE_TR_MS_40
+                                     };
             if (!video_encode_hint_sent) {
                 perform_hint_action(video_encode_metadata.hint_id,
                 resource_values,
