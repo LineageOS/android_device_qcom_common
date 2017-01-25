@@ -46,6 +46,9 @@ if [ -f "$MY_DIR"/"$SUBSYSTEM"-"$PLATFORM"-32.txt -a -f "$MY_DIR"/"$SUBSYSTEM"-"
 
     setup_vendor "$DEVICE/${PLATFORM}-64/$SUBSYSTEM" "$VENDOR" "$CM_ROOT" true true $SUBSYSTEM
     extract "$MY_DIR"/"$SUBSYSTEM"-"$PLATFORM"-64.txt "$SRC"
+else if [ -f "$MY_DIR"/"$SUBSYSTEM".txt ]; then
+    setup_vendor "$DEVICE/$SUBSYSTEM" "$VENDOR" "$CM_ROOT" true true
+    extract "$MY_DIR"/"$SUBSYSTEM".txt "$SRC"
 else
     setup_vendor "$DEVICE/$PLATFORM/$SUBSYSTEM" "$VENDOR" "$CM_ROOT" true true $SUBSYSTEM
     extract "$MY_DIR"/"$SUBSYSTEM"-"$PLATFORM".txt "$SRC"
