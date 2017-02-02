@@ -190,7 +190,7 @@ int power_hint_override(__unused struct power_module *module, power_hint_t hint,
                         resources_interaction_fling_boost);
             }
             return HINT_HANDLED;
-        case POWER_HINT_LAUNCH_BOOST:
+        case POWER_HINT_LAUNCH:
             duration = 2000;
             interaction(duration, ARRAY_SIZE(resources_launch_boost),
                     resources_launch_boost);
