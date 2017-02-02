@@ -400,7 +400,7 @@ int power_hint_override(struct power_module *module __unused, power_hint_t hint,
         return HINT_HANDLED;
     }
 
-    if (hint == POWER_HINT_LAUNCH_BOOST) {
+    if (hint == POWER_HINT_LAUNCH) {
         int duration = 2000;
         int resources[] = {
             ALL_CPUS_PWR_CLPS_DIS,

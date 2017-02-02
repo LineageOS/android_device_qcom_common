@@ -202,7 +202,7 @@ int power_hint_override(__unused struct power_module *module,
     long long elapsed_time;
     int duration;
 
-    int resources_launch_boost[] = {
+    int resources_launch[] = {
         SCHED_BOOST_ON_V3, 0x1,
         MAX_FREQ_BIG_CORE_0, 0xFFF,
         MAX_FREQ_LITTLE_CORE_0, 0xFFF,
@@ -266,20 +266,11 @@ int power_hint_override(__unused struct power_module *module,
         return HINT_HANDLED;
     }
 
-    if (hint == POWER_HINT_LAUNCH_BOOST) {
-        launch_boost_info_t *info = (launch_boost_info_t *)data;
-        if (info == NULL) {
-            ALOGE("Invalid argument for launch boost");
-            return HINT_HANDLED;
-        }
-
+    if (hint == POWER_HINT_LAUNCH) {
         duration = 2000;
 
-        ALOGV("LAUNCH_BOOST: %s (pid=%d)", info->packageName, info->pid);
-
-        start_prefetch(info->pid, info->packageName);
-        interaction(duration, ARRAY_SIZE(resources_launch_boost),
-                resources_launch_boost);
+        interaction(duration, ARRAY_SIZE(resources_launch),
+                resources_launch);
         return HINT_HANDLED;
     }
 

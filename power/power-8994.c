@@ -218,19 +218,10 @@ int power_hint_override(__attribute__((unused)) struct power_module *module,
         return HINT_HANDLED;
     }
 
-    if (hint == POWER_HINT_LAUNCH_BOOST) {
-        launch_boost_info_t *info = (launch_boost_info_t *)data;
-        if (info == NULL) {
-            ALOGE("Invalid argument for launch boost");
-            return HINT_HANDLED;
-        }
-
-        ALOGV("LAUNCH_BOOST: %s (pid=%d)", info->packageName, info->pid);
-
+    if (hint == POWER_HINT_LAUNCH) {
         int duration = 2000;
         int resources[] = { SCHED_BOOST_ON, 0x20C };
 
-        start_prefetch(info->pid, info->packageName);
         interaction(duration, ARRAY_SIZE(resources), resources);
 
         return HINT_HANDLED;
