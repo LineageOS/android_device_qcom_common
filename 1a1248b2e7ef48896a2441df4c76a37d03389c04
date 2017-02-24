@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa5d592f_0e55d2c5",
+        "filename": "power/metadata-parser.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2017-02-24T17:12:16Z",
+      "side": 1,
+      "message": "space between the + to match the style of the file",
+      "range": {
+        "startLine": 66,
+        "startChar": 29,
+        "endLine": 66,
+        "endChar": 31
+      },
+      "revId": "1a1248b2e7ef48896a2441df4c76a37d03389c04",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
