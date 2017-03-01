@@ -17,7 +17,7 @@ msm8960: 6.0.1 blobs from flo mob30x
 msm8974: 6.0.1 blobs from bacon  
 msm8992: 7.0 blobs from bullhead nrd90s  
 msm8994: 7.0 blobs from angler nrd90u  
-msm8996: 7.1 blobs from nx531j nubia UI v3.61 nmf26f
+msm8996: 7.1 blobs from oneplus3 OxygenOS Open Beta 12 nmf26f
 ### Min kernel patch level required:
 msm8916: Any 5.0+ kernel  
 msm8952: Any 6.0+ kernel  
