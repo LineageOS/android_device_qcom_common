@@ -1,5 +1,6 @@
 # Copyright (C) 2009 The Android Open Source Project
 # Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+# Copyright (c) 2017 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -352,6 +353,11 @@ def OTA_InstallEnd(info):
     InstallImgImages(info.script, imgImages)
   return
 
+
+def FullOTA_PostValidate(info):
+    info.script.AppendExtra('run_program("/tmp/install/bin/e2fsck_static", "-fy", "/dev/block/platform/msm_sdcc.1/by-name/system");');
+    info.script.AppendExtra('run_program("/tmp/install/bin/resize2fs_static", "/dev/block/platform/msm_sdcc.1/by-name/system");');
+    info.script.AppendExtra('run_program("/tmp/install/bin/e2fsck_static", "-fy", "/dev/block/platform/msm_sdcc.1/by-name/system");');
 
 def FullOTA_InstallEnd_MMC(info):
   if OTA_VerifyEnd(info, info.input_version, info.input_zip):
