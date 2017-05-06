@@ -198,6 +198,7 @@ int power_hint_override(__unused struct power_module *module,
         power_hint_t hint, void *data)
 {
     static struct timespec s_previous_boost_timespec;
+    static int s_previous_duration;
     struct timespec cur_boost_timespec;
     long long elapsed_time;
     int duration;
@@ -210,7 +211,6 @@ int power_hint_override(__unused struct power_module *module,
         MIN_FREQ_LITTLE_CORE_0, 0xFFF,
         CPUBW_HWMON_MIN_FREQ, 0x8C,
         ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
-        STOR_CLK_SCALE_DIS, 0x1,
     };
 
     int resources_cpu_boost[] = {
@@ -227,7 +227,10 @@ int power_hint_override(__unused struct power_module *module,
     };
 
     int resources_interaction_boost[] = {
+        CPUBW_HWMON_MIN_FREQ, 0x33,
         MIN_FREQ_BIG_CORE_0, 0x3E8,
+        MIN_FREQ_LITTLE_CORE_0, 0x3E8,
+        SCHED_BOOST_ON_V3, 0x1,
     };
 
     if (hint == POWER_HINT_SET_PROFILE) {
@@ -244,17 +247,17 @@ int power_hint_override(__unused struct power_module *module,
 
         clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
         elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-        if (elapsed_time > 750000)
-            elapsed_time = 750000;
         /**
          * Don't hint if it's been less than 250ms since last boost
          * also detect if we're doing anything resembling a fling
          * support additional boosting in case of flings
          */
-        else if (elapsed_time < 250000 && duration <= 750)
+        if (s_previous_duration * 1000 > elapsed_time + duration * 1000) {
             return HINT_HANDLED;
+        }
 
         s_previous_boost_timespec = cur_boost_timespec;
+        s_previous_duration = duration;
 
         if (duration >= 1500) {
             interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
@@ -267,7 +270,7 @@ int power_hint_override(__unused struct power_module *module,
     }
 
     if (hint == POWER_HINT_LAUNCH) {
-        duration = 2000;
+        duration = 5000;
 
         interaction(duration, ARRAY_SIZE(resources_launch),
                 resources_launch);
