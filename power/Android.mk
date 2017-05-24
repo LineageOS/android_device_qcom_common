@@ -49,7 +49,7 @@ ifeq ($(call is-board-platform-in-list, msm8952), true)
 LOCAL_SRC_FILES += power-8952.c
 endif
 
-ifeq ($(call is-board-platform-in-list,msm8937), true)
+ifeq ($(call is-board-platform-in-list, msm8937 msm8953), true)
 LOCAL_SRC_FILES += power-8937.c
 LOCAL_CFLAGS += -DMPCTLV3
 endif
