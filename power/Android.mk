@@ -54,6 +54,11 @@ LOCAL_SRC_FILES += power-8937.c
 LOCAL_CFLAGS += -DMPCTLV3
 endif
 
+ifeq ($(call is-board-platform-in-list, msm8953), true)
+LOCAL_SRC_FILES += power-8937.c
+LOCAL_CFLAGS += -DMPCTLV3
+endif
+
 ifeq ($(call is-board-platform-in-list, apq8084), true)
 LOCAL_SRC_FILES += power-8084.c
 endif
