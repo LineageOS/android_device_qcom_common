@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa82b9bf_57034e73",
+        "filename": "power/Android.mk",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 2936
+      },
+      "writtenOn": "2017-05-26T03:32:48Z",
+      "side": 1,
+      "message": "feels like you should just filter msm8937 msm8953 here.",
+      "revId": "f0f9eae94f0550ba5c4d2a1e349659bc8acbe7a8",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
