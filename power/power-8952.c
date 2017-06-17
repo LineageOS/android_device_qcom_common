@@ -110,25 +110,25 @@ int  power_hint_override(struct power_module *module, power_hint_t hint,
     static struct timespec s_previous_boost_timespec;
     struct timespec cur_boost_timespec;
     long long elapsed_time;
+
     int resources_launch[] = {
-        ALL_CPUS_PWR_CLPS_DIS,
-        SCHED_BOOST_ON,
-        SCHED_PREFER_IDLE_DIS,
-        0x20f,
-        0x4001,
-        0x4101,
-        0x4201,
+        SCHED_BOOST_ON_V3, 0x1,
+        MIN_FREQ_BIG_CORE_0, 0x708,
+        ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+        CPUS_ONLINE_MIN_BIG, 0x4,
+        GPU_MIN_PWRLVL_BOOST, 0x1,
     };
-    int resources_cpu_boost[] = {
-        ALL_CPUS_PWR_CLPS_DIS,
-        SCHED_BOOST_ON,
-        SCHED_PREFER_IDLE_DIS,
-        0x20d,
+
+    int resources_interaction_fling_boost[] = {
+        SCHED_BOOST_ON_V3, 0x1,
+        MIN_FREQ_BIG_CORE_0, 0x708,
+        SCHED_PREFER_IDLE_DIS_V3, 0x1,
     };
+
     int resources_interaction_boost[] = {
-        SCHED_PREFER_IDLE_DIS,
-        0x20d,
-        0x3d01,
+        SCHED_BOOST_ON_V3, 0x1,
+        MIN_FREQ_BIG_CORE_0, 0x708,
+        SCHED_PREFER_IDLE_DIS_V3, 0x1,
     };
 
     if (hint == POWER_HINT_SET_PROFILE) {
@@ -165,8 +165,8 @@ int  power_hint_override(struct power_module *module, power_hint_t hint,
             s_previous_boost_timespec = cur_boost_timespec;
 
             if (duration >= 1500) {
-                interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                        resources_cpu_boost);
+                interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
+                        resources_interaction_fling_boost);
             } else {
                 interaction(duration, ARRAY_SIZE(resources_interaction_boost),
                         resources_interaction_boost);
