@@ -50,6 +50,14 @@
 pthread_mutex_t camera_hint_mutex = PTHREAD_MUTEX_INITIALIZER;
 static int camera_hint_ref_count;
 static int current_power_profile = PROFILE_BALANCED;
+static int sustained_mode_handle = 0;
+static int vr_mode_handle = 0;
+int sustained_performance_mode = 0;
+int vr_mode = 0;
+static pthread_mutex_t s_interaction_lock = PTHREAD_MUTEX_INITIALIZER;
+int launch_handle = -1;
+int launch_mode;
+#define CHECK_HANDLE(x) (((x)>0) && ((x)!=-1))
 
 extern void interaction(int duration, int num_args, int opt_list[]);
 
@@ -243,6 +251,44 @@ int power_hint_override(__unused struct power_module *module,
         MIN_FREQ_BIG_CORE_0, 0x3E8,
     };
 
+    int resources_sustained_mode[] = {
+        MAX_FREQ_BIG_CORE_0, 1209,
+        MAX_FREQ_LITTLE_CORE_0, 1209,
+        GPU_MIN_FREQ, 133,
+        GPU_MAX_FREQ, 315,
+        GPU_BUS_MIN_FREQ, 7759,
+    };
+
+    int resources_sustained_vr_mode[] = {
+        MIN_FREQ_BIG_CORE_0, 1209,
+        MIN_FREQ_LITTLE_CORE_0, 1209,
+        MAX_FREQ_BIG_CORE_0, 1209,
+        MAX_FREQ_LITTLE_CORE_0, 1209,
+        GPU_MIN_FREQ, 315,
+        GPU_MAX_FREQ, 315,
+        GPU_BUS_MIN_FREQ, 7759,
+    };
+
+    int resources_vr_mode[] = {
+        MAX_FREQ_BIG_CORE_0, 1440,
+        MAX_FREQ_LITTLE_CORE_0, 1440,
+        MIN_FREQ_BIG_CORE_0, 1440,
+        MIN_FREQ_LITTLE_CORE_0, 1440,
+        GPU_MAX_FREQ, 510,
+        GPU_MIN_FREQ, 510,
+        GPU_BUS_MIN_FREQ, 7759,
+    };
+
+    int resources_back_to_sustained_mode[] = {
+        MIN_FREQ_BIG_CORE_0, 0,
+        MIN_FREQ_LITTLE_CORE_0, 0,
+        MAX_FREQ_BIG_CORE_0, 1209,
+        MAX_FREQ_LITTLE_CORE_0, 1209,
+        GPU_MIN_FREQ, 133,
+        GPU_MAX_FREQ, 315,
+        GPU_BUS_MIN_FREQ, 0,
+    };
+
     if (hint == POWER_HINT_SET_PROFILE) {
         set_power_profile(*(int32_t *)data);
         return HINT_HANDLED;
@@ -253,6 +299,12 @@ int power_hint_override(__unused struct power_module *module,
         return HINT_HANDLED;
 
     if (hint == POWER_HINT_INTERACTION) {
+        pthread_mutex_lock(&s_interaction_lock);
+        if (sustained_performance_mode || vr_mode) {
+            pthread_mutex_unlock(&s_interaction_lock);
+            return HINT_HANDLED;
+        }
+
         duration = data ? *((int *)data) : 500;
 
         clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
@@ -264,8 +316,10 @@ int power_hint_override(__unused struct power_module *module,
          * also detect if we're doing anything resembling a fling
          * support additional boosting in case of flings
          */
-        else if (elapsed_time < 250000 && duration <= 750)
+        else if (elapsed_time < 250000 && duration <= 750) {
+            pthread_mutex_unlock(&s_interaction_lock);
             return HINT_HANDLED;
+        }
 
         s_previous_boost_timespec = cur_boost_timespec;
 
@@ -276,19 +330,40 @@ int power_hint_override(__unused struct power_module *module,
             interaction(duration, ARRAY_SIZE(resources_interaction_boost),
                     resources_interaction_boost);
         }
+        pthread_mutex_unlock(&s_interaction_lock);
         return HINT_HANDLED;
     }
 
     if (hint == POWER_HINT_LAUNCH) {
         duration = 2000;
+        if (sustained_performance_mode || vr_mode) {
+            return HINT_HANDLED;
+        }
 
-        interaction(duration, ARRAY_SIZE(resources_launch),
-                resources_launch);
-        return HINT_HANDLED;
+        if (data && launch_mode == 0) {
+            launch_handle = interaction_with_handle(
+                launch_handle, duration, ARRAY_SIZE(resources_launch), resources_launch);
+            if (launch_handle > 0) {
+                launch_mode = 1;
+                ALOGI("Activity launch hint handled");
+                return HINT_HANDLED;
+            } else {
+                return HINT_NONE;
+            }
+        } else if (data == NULL && launch_mode == 1) {
+            release_request(launch_handle);
+            launch_mode = 0;
+            return HINT_HANDLED;
+        }
+        return HINT_NONE;
     }
 
     if (hint == POWER_HINT_CPU_BOOST) {
         duration = *(int32_t *)data / 1000;
+        if (sustained_performance_mode || vr_mode) {
+            return HINT_HANDLED;
+        }
+
         if (duration > 0) {
             interaction(duration, ARRAY_SIZE(resources_cpu_boost),
                     resources_cpu_boost);
@@ -298,6 +373,118 @@ int power_hint_override(__unused struct power_module *module,
 
     if (hint == POWER_HINT_VIDEO_ENCODE)
         return process_video_encode_hint(data);
+
+    /* Sustained performance mode:
+     * All CPUs are capped to ~1.2GHz
+     * GPU frequency is capped to 315MHz
+     */
+    /* VR+Sustained performance mode:
+     * All CPUs are locked to ~1.2GHz
+     * GPU frequency is locked to 315MHz
+     * GPU BW min_freq is raised to 775MHz
+     */
+    if (hint == POWER_HINT_SUSTAINED_PERFORMANCE)
+    {
+        duration = 0;
+        pthread_mutex_lock(&s_interaction_lock);
+        if (data && sustained_performance_mode == 0) {
+            if (vr_mode == 0) { // Sustained mode only.
+                // Ensure that POWER_HINT_LAUNCH is not in progress.
+                if (launch_mode == 1) {
+                    release_request(launch_handle);
+                    launch_mode = 0;
+                }
+                sustained_mode_handle = interaction_with_handle(
+                    sustained_mode_handle, duration,
+                    ARRAY_SIZE(resources_sustained_mode), resources_sustained_mode);
+                if (!CHECK_HANDLE(sustained_mode_handle)) {
+                    ALOGE("Failed interaction_with_handle for sustained_mode_handle");
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return HINT_NONE;
+                }
+            } else if (vr_mode == 1) { // Sustained + VR mode.
+                release_request(vr_mode_handle);
+                sustained_mode_handle = interaction_with_handle(
+                    sustained_mode_handle, duration,
+                    ARRAY_SIZE(resources_sustained_vr_mode), resources_sustained_vr_mode);
+                if (!CHECK_HANDLE(sustained_mode_handle)) {
+                    ALOGE("Failed interaction_with_handle for sustained_mode_handle");
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return HINT_NONE;
+                }
+            }
+            sustained_performance_mode = 1;
+        } else if (sustained_performance_mode == 1) {
+            release_request(sustained_mode_handle);
+            if (vr_mode == 1) { // Switch back to VR Mode.
+                vr_mode_handle = interaction_with_handle(
+                    vr_mode_handle, duration,
+                    ARRAY_SIZE(resources_vr_mode), resources_vr_mode);
+                if (!CHECK_HANDLE(vr_mode_handle)) {
+                    ALOGE("Failed interaction_with_handle for vr_mode_handle");
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return HINT_NONE;
+                }
+            }
+            sustained_performance_mode = 0;
+        }
+        pthread_mutex_unlock(&s_interaction_lock);
+        return HINT_HANDLED;
+    }
+
+    /* VR mode:
+     * All CPUs are locked at ~1.4GHz
+     * GPU frequency is locked  to 510MHz
+     * GPU BW min_freq is raised to 775MHz
+     */
+    if (hint == POWER_HINT_VR_MODE)
+    {
+        duration = 0;
+        pthread_mutex_lock(&s_interaction_lock);
+        if (data && vr_mode == 0) {
+            if (sustained_performance_mode == 0) { // VR mode only.
+                // Ensure that POWER_HINT_LAUNCH is not in progress.
+                if (launch_mode == 1) {
+                    release_request(launch_handle);
+                    launch_mode = 0;
+                }
+                vr_mode_handle = interaction_with_handle(
+                    vr_mode_handle, duration,
+                    ARRAY_SIZE(resources_vr_mode), resources_vr_mode);
+                if (!CHECK_HANDLE(vr_mode_handle)) {
+                    ALOGE("Failed interaction_with_handle for vr_mode_handle");
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return HINT_NONE;
+                }
+            } else if (sustained_performance_mode == 1) { // Sustained + VR mode.
+                release_request(sustained_mode_handle);
+                vr_mode_handle = interaction_with_handle(
+                    vr_mode_handle, duration,
+                    ARRAY_SIZE(resources_sustained_vr_mode), resources_sustained_vr_mode);
+                if (!CHECK_HANDLE(vr_mode_handle)) {
+                    ALOGE("Failed interaction_with_handle for vr_mode_handle");
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return HINT_NONE;
+                }
+            }
+            vr_mode = 1;
+        } else if (vr_mode == 1) {
+            release_request(vr_mode_handle);
+            if (sustained_performance_mode == 1) { // Switch back to sustained Mode.
+                sustained_mode_handle = interaction_with_handle(
+                    sustained_mode_handle, duration,
+                    ARRAY_SIZE(resources_back_to_sustained_mode), resources_back_to_sustained_mode);
+                if (!CHECK_HANDLE(sustained_mode_handle)) {
+                    ALOGE("Failed interaction_with_handle for sustained_mode_handle");
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return HINT_NONE;
+                }
+            }
+            vr_mode = 0;
+        }
+        pthread_mutex_unlock(&s_interaction_lock);
+        return HINT_HANDLED;
+    }
 
     return HINT_NONE;
 }
