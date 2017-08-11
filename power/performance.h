@@ -327,6 +327,9 @@ enum STORAGE {
 
 enum GPU {
     GPU_MIN_PWRLVL_BOOST        = 0x42804000,
+    GPU_MIN_FREQ                = 0x42C24000,
+    GPU_MAX_FREQ                = 0x42C20000,
+    GPU_BUS_MIN_FREQ            = 0x42C28000,
 };
 #endif
 
