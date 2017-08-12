@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66787f31_c2c808e5",
+        "filename": "power/power-8996.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 10258
+      },
+      "writtenOn": "2017-08-12T02:30:55Z",
+      "side": 1,
+      "message": "Maybe here\u0027s a race condition.",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 383,
+        "endChar": 41
+      },
+      "revId": "e4f3c11c863b1b9f15675d7dbc7c5d0575d275b0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
