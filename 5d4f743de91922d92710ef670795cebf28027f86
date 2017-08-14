@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c2564809_c59a67de",
+        "filename": "power/performance.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 10258
+      },
+      "writtenOn": "2017-08-14T08:07:07Z",
+      "side": 1,
+      "message": "Not really, marlin perf stack works fine if you change these opcodes to https://github.com/LineageOS/android_device_google_marlin/blob/cm-14.1/power/power.c#L324\n\nThe reason why I\u0027m using CAF 8998 values, I think QCOM will add the feature(at least support for the new ops) in 8996 O branch, and that\u0027ll be the same as 8998 N, and I don\u0027t get any bad effects with 8998 perf stack running on 8996, power hints are handled correctly and not shown any extra warnings/errors. I\u0027m totally fine with marlin ops but it requites an extra commit to change it when O BSP is rolling out.",
+      "range": {
+        "startLine": 330,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 45
+      },
+      "revId": "5d4f743de91922d92710ef670795cebf28027f86",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71",
+      "unresolved": false
+    }
+  ]
+}
