@@ -79,6 +79,7 @@ endif
 
 ifeq ($(call is-board-platform-in-list,sdm660), true)
 LOCAL_SRC_FILES += power-660.c
+LOCAL_CFLAGS += -DMPCTLV3
 endif
 
 endif  #  End of board specific list
