@@ -60,6 +60,14 @@ static int camera_hint_ref_count;
 static void process_video_encode_hint(void *metadata);
 //static void process_cam_preview_hint(void *metadata);
 
+static int current_power_profile = PROFILE_BALANCED;
+
+extern void interaction(int duration, int num_args, int opt_list[]);
+
+int get_number_of_profiles() {
+    return 5;
+}
+
 /**
  * If target is SDM630:
  *     return 1
@@ -80,11 +88,190 @@ static bool is_target_SDM630()
     return is_target_SDM630;
 }
 
-int  power_hint_override(struct power_module *module, power_hint_t hint,
+static int profile_high_performance[] = {
+    SCHED_BOOST_ON_V3_RESID, 2,
+    ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+    CPUS_ONLINE_MIN_BIG, 0x4,
+    CPUS_ONLINE_MIN_LITTLE, 0x4,
+    MIN_FREQ_BIG_CORE_0, 0xFFF,
+    MIN_FREQ_LITTLE_CORE_0, 0xFFF,
+};
+
+static int profile_power_save_660[] = {
+    CPUS_ONLINE_MAX_LIMIT_BIG, 0x2,
+    MAX_FREQ_BIG_CORE_0, 0x44C,
+    MAX_FREQ_LITTLE_CORE_0, 0x276,
+};
+
+static int profile_power_save_630[] = {
+    CPUS_ONLINE_MAX_LIMIT_BIG, 0x2,
+    MAX_FREQ_BIG_CORE_0, 0x258,
+    MAX_FREQ_LITTLE_CORE_0, 0x30C,
+};
+
+static int profile_bias_power_660[] = {
+    MAX_FREQ_BIG_CORE_0, 0x578,
+    MAX_FREQ_LITTLE_CORE_0, 0x578,
+};
+
+static int profile_bias_power_630[] = {
+    MAX_FREQ_BIG_CORE_0, 0x514,
+    MAX_FREQ_LITTLE_CORE_0, 0x3E8,
+};
+
+static int profile_bias_performance[] = {
+    MIN_FREQ_BIG_CORE_0_RESID, 3,
+};
+
+static void set_power_profile(int profile) {
+
+    if (profile == current_power_profile)
+        return;
+
+    ALOGV("%s: Profile=%d", __func__, profile);
+
+    if (current_power_profile != PROFILE_BALANCED) {
+        undo_hint_action(DEFAULT_PROFILE_HINT_ID);
+        ALOGV("%s: Hint undone", __func__);
+    }
+
+    if (profile == PROFILE_POWER_SAVE) {
+        if (is_target_SDM630()) {
+            perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_power_save_630,
+                ARRAY_SIZE(profile_power_save_630));
+        } else {
+            perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_power_save_660,
+                ARRAY_SIZE(profile_power_save_660));
+        }
+        ALOGD("%s: Set powersave mode", __func__);
+
+    } else if (profile == PROFILE_HIGH_PERFORMANCE) {
+        perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_high_performance,
+                ARRAY_SIZE(profile_high_performance));
+        ALOGD("%s: Set performance mode", __func__);
+
+    } else if (profile == PROFILE_BIAS_POWER) {
+        if (is_target_SDM630()) {
+            perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_bias_power_630,
+                ARRAY_SIZE(profile_bias_power_630));
+        } else {
+            perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_bias_power_660,
+                ARRAY_SIZE(profile_bias_power_660));
+        }
+        ALOGD("%s: Set bias power mode", __func__);
+
+    } else if (profile == PROFILE_BIAS_PERFORMANCE) {
+        perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_bias_performance,
+                ARRAY_SIZE(profile_bias_performance));
+        ALOGD("%s: Set bias perf mode", __func__);
+
+    }
+
+    current_power_profile = profile;
+}
+
+static int resources_launch[] = {
+    SCHED_BOOST_ON_V3_RESID, 1,
+    MIN_FREQ_BIG_CORE_0_RESID, 3,
+    MIN_FREQ_LITTLE_CORE_0_RESID, 2,
+    SCHED_IDLE_NR_RUN_RESID, 1,
+    SCHED_IDLE_RESTRICT_CLUSTER_RESID, 0,
+};
+
+static int resources_cpu_boost[] = {
+    SCHED_BOOST_ON_V3_RESID, 2,
+    MIN_FREQ_BIG_CORE_0_RESID, 1,
+    MIN_FREQ_LITTLE_CORE_0_RESID, 0,
+    CPUBW_HWMON_MIN_FREQ_RESID, 1,
+    ABOVE_HISPEED_DELAY_BIG_RESID, 1,
+    IO_IS_BUSY_BIG, 1,
+    SCHED_FREQ_AGGR_THRH_RESID, 1,
+    GPU_MIN_FREQ_RESID, 1,
+};
+
+static int resources_interaction_fling_boost[] = {
+    SCHED_BOOST_ON_V3_RESID, 2,
+    MIN_FREQ_BIG_CORE_0_RESID, 1,
+    MIN_FREQ_LITTLE_CORE_0_RESID, 0,
+    CPUBW_HWMON_MIN_FREQ_RESID, 1,
+    ABOVE_HISPEED_DELAY_BIG_RESID, 1,
+    IO_IS_BUSY_BIG, 1,
+    SCHED_FREQ_AGGR_THRH_RESID, 1,
+    GPU_MIN_FREQ_RESID, 1,
+};
+
+static int resources_interaction_boost[] = {
+    MIN_FREQ_BIG_CORE_0_RESID, 1,
+    MIN_FREQ_LITTLE_CORE_0_RESID, 0,
+};
+
+int power_hint_override(struct power_module *module, power_hint_t hint,
         void *data)
 {
+    static struct timespec s_previous_boost_timespec;
+    struct timespec cur_boost_timespec;
+    static int s_previous_duration = 0;
+    long long elapsed_time;
+    int duration;
+
+    /* Skip other hints in power save mode */
+    if (current_power_profile == PROFILE_POWER_SAVE)
+        return HINT_HANDLED;
 
     switch(hint) {
+        case POWER_HINT_SET_PROFILE:
+        {
+            set_power_profile(*(int32_t *)data);
+            return HINT_HANDLED;
+        }
+        case POWER_HINT_INTERACTION:
+        {
+            // TODO
+            duration = 1500; // 1.5s by default
+            if (data) {
+                int input_duration = *((int*)data) + 750;
+                if (input_duration > duration) {
+                    duration = (input_duration > 5750) ? 5750 : input_duration;
+                }
+            }
+
+            clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+
+            elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
+            // don't hint if previous hint's duration covers this hint's duration
+            if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+                return HINT_HANDLED;
+            }
+            s_previous_boost_timespec = cur_boost_timespec;
+            s_previous_duration = duration;
+
+            if (duration >= 1500) {
+                interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
+                        resources_interaction_fling_boost);
+            } else {
+                interaction(duration, ARRAY_SIZE(resources_interaction_boost),
+                        resources_interaction_boost);
+            }
+            return HINT_HANDLED;
+        }
+        case POWER_HINT_LAUNCH:
+        {
+            duration = 2000;
+
+            interaction(duration, ARRAY_SIZE(resources_launch),
+                    resources_launch);
+            return HINT_HANDLED;
+        }
+        case POWER_HINT_CPU_BOOST:
+        {
+            duration = *(int32_t *)data / 1000;
+            if (duration > 0) {
+                interaction(duration, ARRAY_SIZE(resources_cpu_boost),
+                        resources_cpu_boost);
+                return HINT_HANDLED;
+            }
+        }
+        break;
         case POWER_HINT_VSYNC:
             break;
         case POWER_HINT_VIDEO_ENCODE:
