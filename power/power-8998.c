@@ -55,6 +55,153 @@ int vr_mode = 0;
 static pthread_mutex_t s_interaction_lock = PTHREAD_MUTEX_INITIALIZER;
 #define CHECK_HANDLE(x) (((x)>0) && ((x)!=-1))
 
+static int current_power_profile = PROFILE_BALANCED;
+
+extern void interaction(int duration, int num_args, int opt_list[]);
+
+int get_number_of_profiles() {
+    return 5;
+}
+
+static int profile_high_performance[] = {
+    SCHED_BOOST_ON_V3, 0x1,
+    MIN_FREQ_BIG_CORE_0, 0xFFF,
+    MIN_FREQ_LITTLE_CORE_0, 0xFFF,
+    ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+};
+
+static int profile_power_save[] = {
+    MAX_FREQ_BIG_CORE_0, 0x3E8,
+    MAX_FREQ_LITTLE_CORE_0, 0x3E8,
+};
+
+static int profile_bias_power[] = {
+    MAX_FREQ_BIG_CORE_0, 0x514,
+    MAX_FREQ_LITTLE_CORE_0, 0x3E8,
+};
+
+static int profile_bias_performance[] = {
+    MIN_FREQ_BIG_CORE_0, 0x578,
+};
+
+static void set_power_profile(int profile) {
+
+    if (profile == current_power_profile)
+        return;
+
+    ALOGV("%s: Profile=%d", __func__, profile);
+
+    if (current_power_profile != PROFILE_BALANCED) {
+        undo_hint_action(DEFAULT_PROFILE_HINT_ID);
+        ALOGV("%s: Hint undone", __func__);
+    }
+
+    if (profile == PROFILE_POWER_SAVE) {
+        perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_power_save,
+            ARRAY_SIZE(profile_power_save));
+        ALOGD("%s: Set powersave mode", __func__);
+
+    } else if (profile == PROFILE_HIGH_PERFORMANCE) {
+        perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_high_performance,
+                ARRAY_SIZE(profile_high_performance));
+        ALOGD("%s: Set performance mode", __func__);
+
+    } else if (profile == PROFILE_BIAS_POWER) {
+        perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_bias_power,
+            ARRAY_SIZE(profile_bias_power));
+        ALOGD("%s: Set bias power mode", __func__);
+
+    } else if (profile == PROFILE_BIAS_PERFORMANCE) {
+        perform_hint_action(DEFAULT_PROFILE_HINT_ID, profile_bias_performance,
+                ARRAY_SIZE(profile_bias_performance));
+        ALOGD("%s: Set bias perf mode", __func__);
+
+    }
+
+    current_power_profile = profile;
+}
+
+static int resources_launch[] = {
+    SCHED_BOOST_ON_V3, 0x1,
+    MAX_FREQ_BIG_CORE_0, 0x939,
+    MAX_FREQ_LITTLE_CORE_0, 0xFFF,
+    MIN_FREQ_BIG_CORE_0, 0xFFF,
+    MIN_FREQ_LITTLE_CORE_0, 0xFFF,
+    CPUBW_HWMON_MIN_FREQ, 0x8C,
+    ALL_CPUS_PWR_CLPS_DIS_V3, 0x1,
+    STOR_CLK_SCALE_DIS, 0x1,
+};
+
+static int resources_cpu_boost[] = {
+    SCHED_BOOST_ON_V3, 0x1,
+    MIN_FREQ_BIG_CORE_0, 0x3E8,
+};
+
+static int resources_interaction_fling_boost[] = {
+    CPUBW_HWMON_MIN_FREQ, 0x33,
+    MIN_FREQ_BIG_CORE_0, 0x3E8,
+    MIN_FREQ_LITTLE_CORE_0, 0x3E8,
+    SCHED_BOOST_ON_V3, 0x2,
+};
+
+static int resources_interaction_boost[] = {
+    MIN_FREQ_BIG_CORE_0, 0x3E8,
+};
+
+static int process_interaction_hint(void *data)
+{
+    static struct timespec s_previous_boost_timespec;
+    struct timespec cur_boost_timespec;
+    static int s_previous_duration = 0;
+    long long elapsed_time;
+    int duration = 1500; // 1.5s by default
+    if (data) {
+        int input_duration = *((int*)data) + 750;
+        if (input_duration > duration) {
+            duration = (input_duration > 5750) ? 5750 : input_duration;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+
+    elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
+    // don't hint if previous hint's duration covers this hint's duration
+    if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+        return HINT_HANDLED;
+    }
+    s_previous_boost_timespec = cur_boost_timespec;
+    s_previous_duration = duration;
+
+    if (duration >= 1500) {
+        interaction(duration, ARRAY_SIZE(resources_interaction_fling_boost),
+                resources_interaction_fling_boost);
+    } else {
+        interaction(duration, ARRAY_SIZE(resources_interaction_boost),
+                resources_interaction_boost);
+    }
+    return HINT_HANDLED;
+}
+
+static int process_launch_hint(void *data)
+{
+    int duration = 2000;
+
+    interaction(duration, ARRAY_SIZE(resources_launch),
+            resources_launch);
+    return HINT_HANDLED;
+}
+
+static int process_cpu_boost_hint(void *data)
+{
+    int duration = *(int32_t *)data / 1000;
+    if (duration > 0) {
+        interaction(duration, ARRAY_SIZE(resources_cpu_boost),
+                resources_cpu_boost);
+        return HINT_HANDLED;
+    }
+    return HINT_NONE;
+}
+
 static int process_sustained_perf_hint(void *data)
 {
     int duration = 0;
@@ -232,7 +379,23 @@ static int process_video_encode_hint(void *metadata)
 int power_hint_override(struct power_module *module, power_hint_t hint, void *data)
 {
     int ret_val = HINT_NONE;
+
+    if (hint == POWER_HINT_SET_PROFILE) {
+        set_power_profile(*(int32_t *)data);
+        return HINT_HANDLED;
+    }
+
+    /* Skip other hints in power save mode */
+    if (current_power_profile == PROFILE_POWER_SAVE)
+        return HINT_HANDLED;
+
     switch(hint) {
+        case POWER_HINT_LAUNCH:
+            ret_val = process_launch_hint(data);
+            break;
+        case POWER_HINT_CPU_BOOST:
+            ret_val = process_cpu_boost_hint(data);
+            break;
         case POWER_HINT_VIDEO_ENCODE:
             ret_val = process_video_encode_hint(data);
             break;
@@ -243,11 +406,7 @@ int power_hint_override(struct power_module *module, power_hint_t hint, void *da
             ret_val = process_vr_mode_hint(data);
             break;
         case POWER_HINT_INTERACTION:
-            pthread_mutex_lock(&s_interaction_lock);
-            if (sustained_performance_mode || vr_mode) {
-                ret_val = HINT_HANDLED;
-            }
-            pthread_mutex_unlock(&s_interaction_lock);
+            ret_val = process_interaction_hint(data);
             break;
         default:
             break;
