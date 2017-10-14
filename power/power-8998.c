@@ -53,6 +53,10 @@ static int vr_mode_handle = 0;
 int sustained_performance_mode = 0;
 int vr_mode = 0;
 static pthread_mutex_t s_interaction_lock = PTHREAD_MUTEX_INITIALIZER;
+int launch_handle = -1;
+int launch_mode;
+int cpu_boost_handle = -1;
+int cpu_boost_mode;
 #define CHECK_HANDLE(x) (((x)>0) && ((x)!=-1))
 
 static int current_power_profile = PROFILE_BALANCED;
@@ -151,6 +155,13 @@ static int resources_interaction_boost[] = {
 static int process_interaction_hint(void *data)
 {
     int duration = 1500; // 1.5s by default
+
+    pthread_mutex_lock(&s_interaction_lock);
+    if (sustained_performance_mode || vr_mode) {
+        pthread_mutex_unlock(&s_interaction_lock);
+        return HINT_HANDLED;
+    }
+
     if (data) {
         int input_duration = *((int*)data) + 750;
         if (input_duration > duration) {
@@ -163,6 +174,7 @@ static int process_interaction_hint(void *data)
     elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
     // don't hint if previous hint's duration covers this hint's duration
     if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
+        pthread_mutex_unlock(&s_interaction_lock);
         return HINT_HANDLED;
     }
     s_previous_boost_timespec = cur_boost_timespec;
@@ -175,6 +187,7 @@ static int process_interaction_hint(void *data)
         interaction(duration, ARRAY_SIZE(resources_interaction_boost),
                 resources_interaction_boost);
     }
+    pthread_mutex_unlock(&s_interaction_lock);
     return HINT_HANDLED;
 }
 
@@ -182,17 +195,49 @@ static int process_launch_hint(void *data)
 {
     int duration = 2000;
 
-    interaction(duration, ARRAY_SIZE(resources_launch),
-            resources_launch);
-    return HINT_HANDLED;
+    if (sustained_performance_mode || vr_mode) {
+        return HINT_HANDLED;
+    }
+
+    if (data && launch_mode == 0) {
+        launch_handle = interaction_with_handle(
+            launch_handle, duration, ARRAY_SIZE(resources_launch), resources_launch);
+        if (CHECK_HANDLE(launch_handle)) {
+            launch_mode = 1;
+            ALOGI("Activity launch hint handled");
+            return HINT_HANDLED;
+        } else {
+            return HINT_NONE;
+        }
+    } else if (data == NULL && launch_mode == 1) {
+        release_request(launch_handle);
+        launch_mode = 0;
+        return HINT_HANDLED;
+    }
+    return HINT_NONE;
 }
 
 static int process_cpu_boost_hint(void *data)
 {
     int duration = *(int32_t *)data / 1000;
-    if (duration > 0) {
-        interaction(duration, ARRAY_SIZE(resources_cpu_boost),
-                resources_cpu_boost);
+
+    if (sustained_performance_mode || vr_mode) {
+        return HINT_HANDLED;
+    }
+
+    if (duration > 0 && data && cpu_boost_mode == 0) {
+        cpu_boost_handle = interaction_with_handle(
+            cpu_boost_handle, duration, ARRAY_SIZE(resources_cpu_boost), resources_cpu_boost);
+        if (CHECK_HANDLE(cpu_boost_handle)) {
+            cpu_boost_mode = 1;
+            ALOGI("CPU boost hint handled");
+            return HINT_HANDLED;
+        } else {
+            return HINT_NONE;
+        }
+    } else if (data == NULL && cpu_boost_mode == 1) {
+        release_request(cpu_boost_handle);
+        cpu_boost_mode = 0;
         return HINT_HANDLED;
     }
     return HINT_NONE;
@@ -212,6 +257,16 @@ static int process_sustained_perf_hint(void *data)
                 ALOGE("Can't get sustained perf hints from xml ");
                 pthread_mutex_unlock(&s_interaction_lock);
                 return HINT_NONE;
+            }
+            // Ensure that POWER_HINT_LAUNCH is not in progress.
+            if (launch_mode == 1) {
+                release_request(launch_handle);
+                launch_mode = 0;
+            }
+            // Ensure that POWER_HINT_CPU_BOOST is not in progress.
+            if (cpu_boost_mode == 1) {
+                release_request(cpu_boost_handle);
+                cpu_boost_mode = 0;
             }
             sustained_mode_handle = interaction_with_handle(
                 sustained_mode_handle, duration, resources, resource_values);
@@ -246,6 +301,7 @@ static int process_sustained_perf_hint(void *data)
                 pthread_mutex_unlock(&s_interaction_lock);
                 return HINT_NONE;
             }
+            release_request(vr_mode_handle);
             vr_mode_handle = interaction_with_handle(
                 vr_mode_handle, duration, resources, resource_values);
             if (!CHECK_HANDLE(vr_mode_handle)) {
@@ -274,6 +330,16 @@ static int process_vr_mode_hint(void *data)
                 ALOGE("Can't get VR mode perf hints from xml ");
                 pthread_mutex_unlock(&s_interaction_lock);
                 return HINT_NONE;
+            }
+            // Ensure that POWER_HINT_LAUNCH is not in progress.
+            if (launch_mode == 1) {
+                release_request(launch_handle);
+                launch_mode = 0;
+            }
+            // Ensure that POWER_HINT_CPU_BOOST is not in progress.
+            if (cpu_boost_mode == 1) {
+                release_request(cpu_boost_handle);
+                cpu_boost_mode = 0;
             }
             vr_mode_handle = interaction_with_handle(
                 vr_mode_handle, duration, resources, resource_values);
@@ -308,6 +374,7 @@ static int process_vr_mode_hint(void *data)
                 pthread_mutex_unlock(&s_interaction_lock);
                 return HINT_NONE;
             }
+            release_request(sustained_mode_handle);
             sustained_mode_handle = interaction_with_handle(
                 sustained_mode_handle, duration, resources, resource_values);
             if (!CHECK_HANDLE(sustained_mode_handle)) {
