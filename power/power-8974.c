@@ -48,35 +48,10 @@
 #include "performance.h"
 #include "power-common.h"
 
-static int first_display_off_hint;
-
 static int current_power_profile = PROFILE_BALANCED;
 
 int get_number_of_profiles() {
     return 5;
-}
-
-/**
- * If target is 8974pro:
- *     return 1
- * else:
- *     return 0
- */
-static int is_target_8974pro(void)
-{
-    static int is_8974pro = -1;
-    int soc_id;
-
-    if (is_8974pro >= 0)
-        return is_8974pro;
-
-    soc_id = get_soc_id();
-    if (soc_id == 194 || (soc_id >= 208 && soc_id <= 218))
-        is_8974pro = 1;
-    else
-        is_8974pro = 0;
-
-    return is_8974pro;
 }
 
 static void set_power_profile(int profile) {
@@ -211,19 +186,6 @@ int set_interactive_override(struct power_module *module __unused, int on)
 
     if (!on) {
         /* Display off. */
-        /*
-         * We need to be able to identify the first display off hint
-         * and release the current lock holder
-         */
-        if (is_target_8974pro()) {
-            if (!first_display_off_hint) {
-                undo_initial_hint_action();
-                first_display_off_hint = 1;
-            }
-            /* used for all subsequent toggles to the display */
-            undo_hint_action(DISPLAY_STATE_HINT_ID_2);
-        }
-
         if ((strncmp(governor, ONDEMAND_GOVERNOR, strlen(ONDEMAND_GOVERNOR)) == 0) &&
                 (strlen(governor) == strlen(ONDEMAND_GOVERNOR))) {
             int resource_values[] = {MS_500, SYNC_FREQ_600, OPTIMAL_FREQ_600, THREAD_MIGRATION_SYNC_OFF};
@@ -235,12 +197,6 @@ int set_interactive_override(struct power_module *module __unused, int on)
         }
     } else {
         /* Display on */
-        if (is_target_8974pro()) {
-            int resource_values2[] = {CPUS_ONLINE_MIN_2};
-            perform_hint_action(DISPLAY_STATE_HINT_ID_2,
-                    resource_values2, ARRAY_SIZE(resource_values2));
-        }
-
         if ((strncmp(governor, ONDEMAND_GOVERNOR, strlen(ONDEMAND_GOVERNOR)) == 0) &&
                 (strlen(governor) == strlen(ONDEMAND_GOVERNOR))) {
             undo_hint_action(DISPLAY_STATE_HINT_ID);
