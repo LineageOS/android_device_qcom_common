@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
  * Copyright (c) 2014, The CyanogenMod Project
+ * Copyright (C) 2017-2018 The LineageOS Project
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -227,7 +228,7 @@ int __attribute__ ((weak)) get_number_of_profiles()
 }
 
 #ifdef SET_INTERACTIVE_EXT
-extern void cm_power_set_interactive_ext(int on);
+extern void power_set_interactive_ext(int on);
 #endif
 
 void set_interactive(struct power_module *module, int on)
@@ -249,7 +250,7 @@ void set_interactive(struct power_module *module, int on)
     display_hint_sent = !on;
 
 #ifdef SET_INTERACTIVE_EXT
-    cm_power_set_interactive_ext(on);
+    power_set_interactive_ext(on);
 #endif
 
     if (set_interactive_override(module, on) == HINT_HANDLED) {
@@ -506,7 +507,7 @@ struct power_module HAL_MODULE_INFO_SYM = {
         .hal_api_version = HARDWARE_HAL_API_VERSION,
         .id = POWER_HARDWARE_MODULE_ID,
         .name = "QCOM Power HAL",
-        .author = "Qualcomm/CyanogenMod",
+        .author = "Qualcomm/LineageOS",
         .methods = &power_module_methods,
     },
 
