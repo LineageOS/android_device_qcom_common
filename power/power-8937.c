@@ -123,8 +123,7 @@ static void set_power_profile(int profile) {
     current_power_profile = profile;
 }
 
-int power_hint_override(__unused struct power_module *module, power_hint_t hint,
-        void *data)
+int power_hint_override(power_hint_t hint, void *data)
 {
     int duration, duration_hint;
     static struct timespec s_previous_boost_timespec;
@@ -211,7 +210,7 @@ int power_hint_override(__unused struct power_module *module, power_hint_t hint,
     return HINT_NONE;
 }
 
-int set_interactive_override(__unused struct power_module *module, int on)
+int set_interactive_override(int on)
 {
     char governor[80];
 

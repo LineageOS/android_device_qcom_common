@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
  * Copyright (c) 2014, The CyanogenMod Project
+ * Copyright (c) 2018, The LineageOS Project
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -50,6 +51,7 @@
 #include "performance.h"
 #include "power-common.h"
 #include "power-feature.h"
+#include "power-helper.h"
 
 static int saved_dcvs_cpu0_slack_max = -1;
 static int saved_dcvs_cpu0_slack_min = -1;
@@ -60,7 +62,7 @@ static int display_hint_sent;
 
 static pthread_mutex_t hint_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static void power_init(__attribute__((unused))struct power_module *module)
+void power_init()
 {
     ALOGI("QCOM power HAL initing.");
 }
@@ -173,7 +175,6 @@ static void process_video_encode_hint(void *metadata)
 }
 
 int __attribute__ ((weak)) power_hint_override(
-        __attribute__((unused)) struct power_module *module,
         __attribute__((unused)) power_hint_t hint,
         __attribute__((unused)) void *data)
 {
@@ -182,13 +183,12 @@ int __attribute__ ((weak)) power_hint_override(
 
 extern void interaction(int duration, int num_args, int opt_list[]);
 
-static void power_hint(__attribute__((unused)) struct power_module *module, power_hint_t hint,
-        void *data)
+void power_hint(power_hint_t hint, void *data)
 {
     pthread_mutex_lock(&hint_mutex);
 
     /* Check if this hint has been overridden. */
-    if (power_hint_override(module, hint, data) == HINT_HANDLED) {
+    if (power_hint_override(hint, data) == HINT_HANDLED) {
         /* The power_hint has been handled. We can skip the rest. */
         goto out;
     }
@@ -214,9 +214,7 @@ out:
     pthread_mutex_unlock(&hint_mutex);
 }
 
-int __attribute__ ((weak)) set_interactive_override(
-        __attribute__((unused)) struct power_module *module,
-        __attribute__((unused)) int on)
+int __attribute__ ((weak)) set_interactive_override(__attribute__((unused)) int on)
 {
     return HINT_NONE;
 }
@@ -230,7 +228,7 @@ int __attribute__ ((weak)) get_number_of_profiles()
 extern void cm_power_set_interactive_ext(int on);
 #endif
 
-void set_interactive(struct power_module *module, int on)
+void power_set_interactive(int on)
 {
     char governor[80];
     char tmp_str[NODE_MAX];
@@ -252,7 +250,7 @@ void set_interactive(struct power_module *module, int on)
     cm_power_set_interactive_ext(on);
 #endif
 
-    if (set_interactive_override(module, on) == HINT_HANDLED) {
+    if (set_interactive_override(on) == HINT_HANDLED) {
         goto out;
     }
 
@@ -438,7 +436,7 @@ out:
     pthread_mutex_unlock(&hint_mutex);
 }
 
-void set_feature(struct power_module *module, feature_t feature, int state)
+void power_set_feature(feature_t feature, int state)
 {
 #ifdef TAP_TO_WAKE_NODE
     char tmp_str[NODE_MAX];
@@ -448,71 +446,13 @@ void set_feature(struct power_module *module, feature_t feature, int state)
         return;
     }
 #endif
-    set_device_specific_feature(module, feature, state);
+    set_device_specific_feature(feature, state);
 }
 
-int get_feature(struct power_module *module __unused, feature_t feature)
+int get_feature(feature_t feature)
 {
     if (feature == POWER_FEATURE_SUPPORTED_PROFILES) {
         return get_number_of_profiles();
     }
     return -1;
 }
-
-static int power_open(const hw_module_t* module, const char* name,
-                    hw_device_t** device)
-{
-    ALOGD("%s: enter; name=%s", __FUNCTION__, name);
-    int retval = 0; /* 0 is ok; -1 is error */
-
-    if (strcmp(name, POWER_HARDWARE_MODULE_ID) == 0) {
-        power_module_t *dev = (power_module_t *)calloc(1,
-                sizeof(power_module_t));
-
-        if (dev) {
-            /* Common hw_device_t fields */
-            dev->common.tag = HARDWARE_DEVICE_TAG;
-            dev->common.module_api_version = POWER_MODULE_API_VERSION_0_3;
-            dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
-
-            dev->init = power_init;
-            dev->powerHint = power_hint;
-            dev->setInteractive = set_interactive;
-            dev->setFeature = set_feature;
-            dev->getFeature = get_feature;
-            dev->get_number_of_platform_modes = NULL;
-            dev->get_platform_low_power_stats = NULL;
-            dev->get_voter_list = NULL;
-
-            *device = (hw_device_t*)dev;
-        } else
-            retval = -ENOMEM;
-    } else {
-        retval = -EINVAL;
-    }
-
-    ALOGD("%s: exit %d", __FUNCTION__, retval);
-    return retval;
-}
-
-static struct hw_module_methods_t power_module_methods = {
-    .open = power_open,
-};
-
-struct power_module HAL_MODULE_INFO_SYM = {
-    .common = {
-        .tag = HARDWARE_MODULE_TAG,
-        .module_api_version = POWER_MODULE_API_VERSION_0_3,
-        .hal_api_version = HARDWARE_HAL_API_VERSION,
-        .id = POWER_HARDWARE_MODULE_ID,
-        .name = "QCOM Power HAL",
-        .author = "Qualcomm/CyanogenMod",
-        .methods = &power_module_methods,
-    },
-
-    .init = power_init,
-    .powerHint = power_hint,
-    .setInteractive = set_interactive,
-    .setFeature = set_feature,
-    .getFeature = get_feature
-};

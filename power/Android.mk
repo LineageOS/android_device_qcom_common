@@ -13,8 +13,8 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_PROPRIETARY_MODULE := true
-LOCAL_SHARED_LIBRARIES := liblog libcutils libdl
-LOCAL_SRC_FILES := power.c metadata-parser.c utils.c list.c hint-data.c
+LOCAL_SHARED_LIBRARIES := liblog libcutils libdl libhidlbase libhidltransport android.hardware.power@1.0
+LOCAL_SRC_FILES := service.cpp Power.cpp power-helper.c metadata-parser.c utils.c list.c hint-data.c
 
 ifneq ($(BOARD_POWER_CUSTOM_BOARD_LIB),)
   LOCAL_WHOLE_STATIC_LIBRARIES += $(BOARD_POWER_CUSTOM_BOARD_LIB)
@@ -93,12 +93,9 @@ else
   LOCAL_STATIC_LIBRARIES += $(TARGET_POWER_SET_FEATURE_LIB)
 endif
 
-ifneq ($(CM_POWERHAL_EXTENSION),)
-LOCAL_MODULE := power.$(CM_POWERHAL_EXTENSION)
-else
-LOCAL_MODULE := power.$(TARGET_BOARD_PLATFORM)
-endif
-LOCAL_MODULE_TAGS := optional
-include $(BUILD_SHARED_LIBRARY)
+LOCAL_MODULE := android.hardware.power@1.0-service-cm
+LOCAL_INIT_RC := android.hardware.power@1.0-service-cm.rc
+
+include $(BUILD_EXECUTABLE)
 
 endif # TARGET_POWERHAL_VARIANT == qcom || WITH_QC_PERF

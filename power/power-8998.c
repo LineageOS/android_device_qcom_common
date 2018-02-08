@@ -194,8 +194,7 @@ static int process_video_encode_hint(void *metadata)
     return HINT_NONE;
 }
 
-int power_hint_override(__unused struct power_module *module,
-        power_hint_t hint, void *data)
+int power_hint_override(power_hint_t hint, void *data)
 {
     static struct timespec s_previous_boost_timespec;
     struct timespec cur_boost_timespec;
@@ -287,7 +286,7 @@ int power_hint_override(__unused struct power_module *module,
     return HINT_NONE;
 }
 
-int set_interactive_override(__unused struct power_module *module, int on)
+int set_interactive_override(int on)
 {
     return HINT_HANDLED; /* Don't excecute this code path, not in use */
     char governor[80];
