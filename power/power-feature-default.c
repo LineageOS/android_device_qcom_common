@@ -17,8 +17,7 @@
 #include <hardware/power.h>
 #include "power-feature.h"
 
-void set_device_specific_feature(struct power_module *module __unused,
-    feature_t feature __unused, int state __unused)
+void set_device_specific_feature(feature_t feature __unused, int state __unused)
 {
 }
 
