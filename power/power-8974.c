@@ -126,8 +126,7 @@ static void set_power_profile(int profile) {
 
 extern void interaction(int duration, int num_args, int opt_list[]);
 
-int power_hint_override(__attribute__((unused)) struct power_module *module,
-        power_hint_t hint, void *data)
+int power_hint_override(power_hint_t hint, void *data)
 {
     if (hint == POWER_HINT_SET_PROFILE) {
         set_power_profile(*(int32_t *)data);
@@ -199,7 +198,7 @@ int power_hint_override(__attribute__((unused)) struct power_module *module,
     return HINT_NONE;
 }
 
-int set_interactive_override(struct power_module *module __unused, int on)
+int set_interactive_override(int on)
 {
     char governor[80];
 

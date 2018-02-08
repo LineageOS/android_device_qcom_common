@@ -256,7 +256,7 @@ typedef int64_t hintdata;
 typedef int hintdata;
 #endif
 
-int  set_interactive_override(struct power_module *module __unused, int on)
+int  set_interactive_override(int on)
 {
     char governor[80];
     char tmp_str[NODE_MAX];
@@ -346,7 +346,7 @@ int  set_interactive_override(struct power_module *module __unused, int on)
     return HINT_HANDLED;
 }
 
-int power_hint_override(struct power_module *module __unused, power_hint_t hint, void *data)
+int power_hint_override(power_hint_t hint, void *data)
 {
     if (hint == POWER_HINT_SET_PROFILE) {
         set_power_profile(*(int32_t *)data);

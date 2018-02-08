@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2018 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef _QCOM_POWER_FEATURE_H
-#define _QCOM_POWER_FEATURE_H
+#ifndef POWER_HELPER_H
 
-#include <hardware/power.h>
+void set_interactive(int on);
+void power_hint(power_hint_t hint, void *data);
+void set_feature(feature_t feature, int state);
 
-void set_device_specific_feature(feature_t feature, int state);
-
-#endif
+#endif // POWER_HELPER_H
