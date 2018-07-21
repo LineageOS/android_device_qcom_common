@@ -76,6 +76,11 @@ LOCAL_SRC_FILES += power-8998.c
 LOCAL_CFLAGS += -DMPCTLV3
 endif
 
+ifeq ($(call is-board-platform-in-list, sdm845), true)
+LOCAL_SRC_FILES += power-845.c
+LOCAL_CFLAGS += -DMPCTLV3
+endif
+
 endif  #  End of board specific list
 
 ifneq ($(TARGET_POWERHAL_SET_INTERACTIVE_EXT),)
